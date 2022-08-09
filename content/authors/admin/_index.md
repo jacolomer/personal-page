@@ -26,7 +26,7 @@ interests:
 # Education to show in About widget
 education:
   courses:
-  - course: Ph.D. Candidate in Social Psychology
+    - course: Ph.D. Candidate in Social Psychology
       institution: University of Granada
       year: 2018-
     - course: Master's Degree in Social Problems
