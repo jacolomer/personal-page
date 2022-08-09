@@ -28,7 +28,7 @@ education:
   courses:
   - course: Ph.D. Candidate in Social Psychology
       institution: University of Granada
-      year: 2018-2023 (?)
+      year: 2018-
     - course: Master's Degree in Social Problems
       institution: University of Granada
       year: 2017-2019
