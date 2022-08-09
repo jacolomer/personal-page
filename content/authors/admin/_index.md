@@ -25,15 +25,15 @@ interests:
 # Education to show in About widget
 education:
   courses:
-    - course: PhD in Artificial Intelligence
-      institution: Stanford University
-      year: 2012
-    - course: MEng in Artificial Intelligence
-      institution: Massachusetts Institute of Technology
-      year: 2009
-    - course: BSc in Artificial Intelligence
-      institution: Massachusetts Institute of Technology
-      year: 2008
+    - course: Máster en Problemas Sociales
+      institution: Universidad de Granada
+      year: 2017-2019
+    - course: Máster en Psicología de la Intervención Social 
+      institution: Universidad de Granada
+      year: 2016-2017
+    - course: Grado en Psicología
+      institution: Universidad de Valencia
+      year: 2012-2016
 
 # Social/Academic Networking
 # For available icons, see: https://wowchemy.com/docs/getting-started/page-builder/#icons
@@ -46,12 +46,12 @@ social:
   - icon: twitter
     icon_pack: fab
     link: https://twitter.com/jacolomer2
-  - icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
-    icon_pack: fas
-    link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
+ # - icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
+  #  icon_pack: fas
+   # link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
   - icon: github
     icon_pack: fab
-    link: https://github.com/gcushen
+    link: https://github.com/jacolomer
   #- icon: linkedin
  #   icon_pack: fab
   #  link: https://www.linkedin.com/
