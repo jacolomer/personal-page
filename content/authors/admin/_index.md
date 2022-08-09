@@ -14,25 +14,29 @@ organizations:
     url: https://www.ugr.es/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include distributed robotics, mobile computing and programmable matter.
+bio: My research interests include attributions for poverty, social justice orientations.
 
 # Interests to show in About widget
 interests:
-  - Artificial Intelligence
-  - Computational Linguistics
-  - Information Retrieval
+  - Attributions for poverty
+  - Poverty perception
+  - Punitive attitudes toward unemployed
+  - Social justice orientations
 
 # Education to show in About widget
 education:
   courses:
-    - course: Máster en Problemas Sociales
-      institution: Universidad de Granada
+  - course: Ph.D. Candidate in Social Psychology
+      institution: University of Granada
+      year: 2018-2023 (?)
+    - course: Master's Degree in Social Problems
+      institution: University of Granada
       year: 2017-2019
-    - course: Máster en Psicología de la Intervención Social 
-      institution: Universidad de Granada
+    - course: Master's Degree in Psychology of Social Intervention 
+      institution: University of Granada
       year: 2016-2017
-    - course: Grado en Psicología
-      institution: Universidad de Valencia
+    - course: Bachelor Degree in Psychology
+      institution: University of Valencia
       year: 2012-2016
 
 # Social/Academic Networking
