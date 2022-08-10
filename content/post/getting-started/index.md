@@ -39,7 +39,7 @@ categories:
 
 ---
 
-<!-- toc -->
+{{< toc >}}
 
 - [0. Simulando los datos para nuestro ejemplo](##0.-Simulando-los-datos-para-nuestro-ejemplo)
 - [1. Paquetes](##1.-Paquetes)
