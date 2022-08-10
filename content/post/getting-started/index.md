@@ -41,21 +41,6 @@ categories:
 
 {{< toc >}}
 
-- [0. Simulando los datos para nuestro ejemplo](##0.-Simulando-los-datos-para-nuestro-ejemplo)
-- [1. Paquetes](##1.-Paquetes)
-- [2. Homogeneidad de las varianzas y normalidad](##2.-Homogeneidad-de-las-varianzas-y-normalidad)
-- [3. Diferencias de medias](##3.-Diferencias%-de-medias)
-- [4. La lógica subyacente](##4.-La-lógica-subyacente)
-- [5. Tamaño del efecto](##5.-Tamaño-del-efecto)
-  * [5.1. Interpretar y transformar el tamaño del efecto](###5.1.-Interpretar-y-transformar-el-tamaño-del-efecto)
-- [6. Test de equivalencias](##6.-Test-del-equivalencias)
-- [7. Representaciones gráficas de diferencias de medias y distribuciones de dos grupos](##7.-Representaciones-gráficas-de-diferencias-de-medias-y-distribuciones-de-dos-grupos)
-  * [7.1. Barplot](###7.1.-Barplot)
-  * [7.2. Gráficos de violín](###7.2.-Gráficos-de-violín)
-  * [7.3. Otros gráficos](###7.3.-Otros-gráficos)
-  * [7.4. Guardar los gráficos](###7.4.-Guardar-los-gráficos)
-
-
 
 
 ## 0. Simulando los datos para nuestro ejemplo
