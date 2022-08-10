@@ -40,11 +40,13 @@ categories:
 toc: true
 ---
 
-# 0. Simulando los datos para nuestro ejemplo
+## 0. Simulando los datos para nuestro ejemplo
 
 Primero simulamos los datos, basándonos en los parámetros del primer estudio de  [Stapel y Lindenberg (2011)](https://science.sciencemag.org/content/332/6026/251.abstract?casa_token=VFzHSJ78wLwAAAAA:3oyCp3jtxNJJf7DBXch4CmNf0K6Q0Ttv2XXuQUZvgcnH6MQzNru95flX_vmsYO-j5X0WhhVwiezjcr_V) sobre cómo influye un contexto ordenado vs desordenado en la discriminación (también simulados, je). Esto es solo para tener unos datos con los que trabajar, en cada ejemplo se explica dónde tendríamos que situar nuestras variables. 
 
-`discrimination <- (rnorm(n = 40, mean = 5.12, sd = 1.01)) #Generamos los datos para la primera media (del grupo 1)
+```{r}
+
+discrimination <- (rnorm(n = 40, mean = 5.12, sd = 1.01)) #Generamos los datos para la primera media (del grupo 1)
 
 data0 <- as.data.frame(discrimination)
 
@@ -60,10 +62,14 @@ data <- rbind(data0, data1)
 
 data$condition <- factor(data$condition,
 levels = c(1,2),
-labels = c("Chaos condition", "Order condition")) #añadimos etiquetas para las condiciones`
+labels = c("Chaos condition", "Order condition")) #añadimos etiquetas para las condiciones
 
 
-# 1. Paquetes
+
+```
+
+
+## 1. Paquetes
 
 
 ```{r paquetes necesarios, message=FALSE, results='hide'}
@@ -85,7 +91,7 @@ Hay que tener en cuenta un par de cosas básicas:
   1. En nuestro ejemplo, la variable dependiente se llama discrimination (las puntuaciones en la escala de discriminación) y la independiente se llama condicion (las dos condiciones que tenemos). Por tanto, para utilizar el código con nuestros datos tendremos que sustituir estos nombres por los nombres de nuestras variables en nuestra base de datos. 
   2. Cuando utilizamos el símbolo del dolar "$" después del nombre de nuestra base de datos estamos pidiendo al programa que busque dentro de esa base de datos. Luego ponemos la variable sobre la que queramso trabajar. 
 
-# 2. Homogeneidad de las varianzas y normalidad
+## 2. Homogeneidad de las varianzas y normalidad
 
 Para la normalidad, utilizamos el test de Shapiro: 
 
@@ -95,6 +101,22 @@ by(data$discrimination, data$condition, shapiro.test)
 
 ```
 
+```{r}
+## data$condition: Chaos condition
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  dd[x, ]
+## W = 0.98371, p-value = 0.8228
+## 
+## ---------------------------------- 
+## data$condition: Order condition
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  dd[x, ]
+## W = 0.97414, p-value = 0.4815
+```
 
 Para comprobar la homogeneidad de las varianzas:
 
@@ -106,6 +128,19 @@ var.test(data$discrimination ~ data$condition) #F-test para comprobar la homogen
 
 ```
 
+```{r}
+
+##  F test to compare two variances
+## 
+## data:  data$discrimination by data$condition
+## F = 0.68234, num df = 39, denom df = 39, p-value = 0.2371
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.360889 1.290113
+## sample estimates:
+## ratio of variances 
+##          0.6823398
+```
 
 Test de Levene. Por defecto utiliza la mediana (más robusto), pero podemos elegir la media con sustituyendo en el argumento center = "mean"
 
@@ -115,6 +150,14 @@ leveneTest(y = data$discrimination, group = data$condition, center = "median")
 
 ```
 
+```{r}
+
+## Levene's Test for Homogeneity of Variance (center = "median")
+##       Df F value Pr(>F)
+## group  1  1.0802 0.3019
+##       78
+
+```
 
 Test de Barlett:
 
@@ -124,7 +167,14 @@ bartlett.test(data$discrimination ~ data$condition)
 
 ```
 
+```{r}
 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  data$discrimination by data$condition
+## Bartlett's K-squared = 1.3979, df = 1, p-value = 0.2371
+
+```
 
 También podemos realizar el test de Brown-Forsyth con la función hov() del paquete HH o el Fligner-Killeen test utilizando la misma fórmula y la función fligner.test(). 
 
@@ -132,7 +182,7 @@ Si el resultado del test que elijamos es p < .05 no podemos asumir que las varia
 
 Si utilizamos t.test() para las diferencias de medias el propio programa lleva a cabo una prueba (e.g. Two Sample t-test) u otra (e.g. Welch Two Sample t-test) en función de si hay igualdad de las varianzas, pero podemos forzarlo asumir igualdad de varianzas con el argumento var.equal = TRUE o a asumir lo contrario, con el argumento var.equal = FALSE. Por tanto, está bien tener control sobre lo que hacemos y elegir la mejor prueba, teniendo en cuanta nuestras consideraciones teóricas, para estudiar la homogeneidad de la varianza y, en consecuencia, el mejor test de comparación de medias. 
 
-# 3. Diferencias de medias
+## 3. Diferencias de medias
 
 
 ```{r, eval=FALSE}
@@ -151,6 +201,21 @@ t.test(discrimination ~ condition, data = data, alternative = "two.sided", var.e
 
 ```
 
+```{r}
+
+##  Two Sample t-test
+## 
+## data:  discrimination by condition
+## t = 2.8596, df = 78, p-value = 0.00544
+## alternative hypothesis: true difference in means between group Chaos condition and group Order condition is not equal to 0
+## 95 percent confidence interval:
+##  0.2013203 1.1240440
+## sample estimates:
+## mean in group Chaos condition mean in group Order condition 
+##                      5.120439                      4.457757
+
+```
+
 Si no podemos asumir varianzas iguales: 
 
 ```{r}
@@ -159,6 +224,20 @@ t.test(discrimination ~ condition, data = data, alternative = "two.sided", var.e
 
 ```
 
+```{r}
+
+##  Welch Two Sample t-test
+## 
+## data:  discrimination by condition
+## t = 2.8596, df = 75.315, p-value = 0.005485
+## alternative hypothesis: true difference in means between group Chaos condition and group Order condition is not equal to 0
+## 95 percent confidence interval:
+##  0.201061 1.124303
+## sample estimates:
+## mean in group Chaos condition mean in group Order condition 
+##                      5.120439                      4.457757
+
+```
 
 Medidas repetidas
 
@@ -167,7 +246,18 @@ Medidas repetidas
 t.test(discrimination ~ condition, data = data, alternative = "two.sided", paired = TRUE, var.equal = TRUE)
 
 ```
-
+```{r}
+##  Paired t-test
+## 
+## data:  discrimination by condition
+## t = 3.1202, df = 39, p-value = 0.003394
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.2330952 1.0922691
+## sample estimates:
+## mean of the differences 
+##               0.6626821
+```
 
 Si los datos no siguen una distribución normal, como test no paramétrico, podemos utilizar el de Wilcoxon: 
 
@@ -176,8 +266,15 @@ Si los datos no siguen una distribución normal, como test no paramétrico, pode
 wilcox.test(data$discrimination ~ data$condition, alternative = "two.sided", paired = FALSE) #Para medidas repetidas en el argumento paired escribiríamos TRUE
 ```
 
+```{r}
 
-# 4. La lógica subyacente
+##  Wilcoxon rank sum exact test
+## 
+## data:  data$discrimination by data$condition
+## W = 1070, p-value = 0.008991
+## alternative hypothesis: true location shift is not equal to 0
+```
+## 4. La lógica subyacente
 
 Este paso puede saltarse (hay que descargar varios paquetes y algunos usando 'remotes', hay mucho código, etc.), es simplemente para ilustrar de forma breve la lógica de una comparación de medias (y otros análisis estadísticos que hacemos).
 
@@ -211,6 +308,14 @@ difmed <- data %>%
 difmed
 
 ```
+```{r}
+## Response: discrimination (numeric)
+## Explanatory: condition (factor)
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1 0.663
+```
 
 Ahora calculamos el intervalo de confianza usando una distribución 'bootstrapped' de las diferencias de medias basada en nuestra muestra. 
 
@@ -234,7 +339,7 @@ medboot %>%
   theme_fancy()
 
 ```
-
+![](1.png)
 
 Ya tenemos calculado nuestro estadístico. Ahora simulamos un mundo donde este sea nulo y añadimos nuestro estadístico a esta población (lo representa la línea roja en el último gráfico de este apatado). 
 
@@ -257,6 +362,8 @@ cond_diffs_null %>%
   theme_fancy()
 ```
 
+![](2.png)
+
 Vemos que parece muy poco probable observar este valor del estadístico en un mundo donde no haya diferencias entre los grupos. 
 
 ```{r, warning=FALSE}
@@ -266,8 +373,14 @@ cond_diffs_null %>%
   mutate(p_value_clean = pvalue(p_value))
 ```
 
+```{r, warning=FALSE}
+## # A tibble: 1 x 2
+##   p_value p_value_clean
+##     <dbl> <chr>        
+## 1  0.0036 0.004
+```
 
-# 5. Tamaño del efecto
+## 5. Tamaño del efecto
 
 Parece que es poco probable obtener estos datos, o más extremos, si la hipótesis nula fuera cierta; nuestros datos parecen ir en línea con la idea de que los contextos desordenados (frente a los ordenados) favorecen las actitudes discriminatorias (!). Esto no es demasiado informativo por sí mismo, así que calculamos el tamaño del efecto para tener una idea de la magnitud de la relación entre la variable independiente y la dependiente. 
 
@@ -280,11 +393,23 @@ Si asumimos que las varianzas son iguales y hemos realizado una prueba t de stud
 
 cohens_d(data$discrimination, y = data$condition, ci = 0.95, pooled_sd = TRUE) #Con pooled_sd = TRUE indicamos que utilice la desviación típica agrupada de ambas muestras. Asumimos que las varianzas son iguales. 
 
+## Cohen's d |       95% CI
+## ------------------------
+## 0.64      | [0.19, 1.09]
+## 
+## - Estimated using pooled SD.
+
 hedges_g(data$discrimination, y = data$condition, ci = 0.95, pooled_sd = FALSE)
+
+## Hedges' g |       95% CI
+## ------------------------
+## 0.63      | [0.19, 1.08]
+## 
+## - Estimated using un-pooled SD.
 
 ```
 
-## 5.1. Interpretar y transformar el tamaño del efecto
+### 5.1. Interpretar y transformar el tamaño del efecto
 
 Utilizar puntos de referencia (benchmarks) para describir el tamaño del efecto que hemos encontrado (principalmente los de Cohen) puede ser problemático, en tanto que no tenemos en cuenta el marco de referencia específico en el que se da nuestro efecto, qué implicaciones puede tener, etc (para profundizar un poco más en la cuestión o la utilización benchmarks alternativos a los de Cohen se puede ver [Funder & Ozer, 2019](https://journals.sagepub.com/doi/full/10.1177/2515245919847202)). Una opción interesante puede ser utilizar guías que se basen en los tamaños del efecto encontrados en la investigación en psicología social ([Lovakov & Agadullina, 2021](https://onlinelibrary.wiley.com/doi/full/10.1002/ejsp.2752?casa_token=PmPfBBvNPCkAAAAA%3AT1_sP2N3IYi9r14sUyov3O0_6agZCH1Ca_ysoURGjg9x_zraGhcs0gYCrkEPzdSUBfC-Rkq7A_xD0wtKHg)). Lovakov y Aggadullina encuentran que los percentiles 25, 50 y 75, analizando 134 meta-análisis publicados, corresponden a valores de la d de Cohen de 0.15, 0.36 y 0.65 respectivamente y a un coeficiente de correlación de 0.12, 0.24 y 0.41. 
 
@@ -297,9 +422,13 @@ Por lo tanto, lo siguiente no es tan relevante como lo anterior, pero podemos pe
 
 interpret_d(1.10, rules = "cohen1988") #Con las reglas de Cohen
 
+## [1] "large"
+## (Rules: cohen1988)
+
 interpret_d(1.10, rules = "lovakov2021") #Con los puntos de referencia de Lovakov y Agadullina (2021)
 
-
+## [1] "large"
+## (Rules: lovakov2021)
 
 ```
 
@@ -310,9 +439,11 @@ También podemos transformar la d de Cohen a un coeficiente de correlación o vi
 
 d_to_r(1.10)
 
+## [1] 0.4819187
+
 ```
 
-# 6. Test de equivalencias
+## 6. Test de equivalencias
 
 Para entender bien qué es un test de equivalencias se puede consultar [Lakens (2017)](https://journals.sagepub.com/doi/full/10.1177/1948550617697177) y [Lakens, Scheel e Isager (2018)](https://journals.sagepub.com/doi/full/10.1177/2515245918770963), donde hay introducciones y guías muy accesibles para llevarlos a cabo; en concreto aquí nos interesan los TOST ("two one-sided test"). Una definición grosera y mucho menos exacta: la idea fundamental es establecer, a priori (antes de recoger los datos), un límite superior e inferior de equivalencia basándonos en el mínimo efecto de interés (SESOI) relevante para nuestra investigación (se pueden ver las posibilidades a la hora de especificar este, también una vez recogidos los datos, en Lakens et al., 2018). Si nuestro efecto cae entre esos intervalos podemos decir que está lo suficientemente cerca de cero para ser equivalente en la práctica. Hay que tener en cuenta que desde la estadística frecuentista no podemos decir que no haya efecto aunque el resultado de nuestro test (e.g. comparación de medias) no sea significativo.
 
@@ -333,17 +464,50 @@ library(TOSTER) #El paquete necesario para los test de equivalencias
 
 TOSTtwo(m1 = 5.218811, m2 = 4.031867, sd1 = 1.088976, sd2 = 1.072184, n1 = 40, n2 = 40, low_eqbound_d = -0.34, high_eqbound_d = 0.34, alpha = 0.05, var.equal = TRUE, plot = TRUE, verbose = TRUE)
 
-#El mismo output nos describe los resultados, en este caso nos indica que el efecto no es estadísticamente equivalente a cero. 
-
 ```
 
+![](3.png)
+
+```{r}
+## TOST results:
+## t-value lower bound: 6.43    p-value lower bound: 0.000000005
+## t-value upper bound: 3.39    p-value upper bound: 0.999
+## degrees of freedom : 78
+## 
+## Equivalence bounds (Cohen's d):
+## low eqbound: -0.34 
+## high eqbound: 0.34
+## 
+## Equivalence bounds (raw scores):
+## low eqbound: -0.3674 
+## high eqbound: 0.3674
+## 
+## TOST confidence interval:
+## lower bound 90% CI: 0.785
+## upper bound 90% CI:  1.589
+## 
+## NHST confidence interval:
+## lower bound 95% CI: 0.706
+## upper bound 95% CI:  1.668
+## 
+## Equivalence Test Result:
+## The equivalence test was non-significant, t(78) = 3.392, p = 0.999, given equivalence bounds of -0.367 and 0.367 (on a raw scale) and an alpha of 0.05.
+## Null Hypothesis Test Result:
+## The null hypothesis test was significant, t(78) = 4.912, p = 0.00000486, given an alpha of 0.05.
+## Based on the equivalence test and the null-hypothesis test combined, we can conclude that the observed effect is statistically different from zero and statistically not equivalent to zero.
+
+```
+El mismo output nos describe los resultados, en este caso nos indica que el efecto no es estadísticamente equivalente a cero. 
 
 
-# 7. Representaciones gráficas de diferencias de medias y distribuciones de dos grupos
+
+
+
+## 7. Representaciones gráficas de diferencias de medias y distribuciones de dos grupos
 
 Para representar estas diferencias hay varias opciones y las posibilidades de personalización en R son enormes, aquí únicamente ponemos algunos ejemplos con el código listo para utilizar. 
 
-## 7.1. Barplot
+### 7.1. Barplot
 
 ```{r}
 
@@ -383,9 +547,10 @@ barplt2
 
 ```
 
+![](4.png)
 
 
-## 7.2. Gráficos de violín 
+### 7.2. Gráficos de violín 
 
 La forma más rápida de hacer un violin plot con bastante información es con ggbetweenstats, del paquete ggstatsplot
 
@@ -393,8 +558,13 @@ La forma más rápida de hacer un violin plot con bastante información es con g
 
 ggbetweenstats(data = data, x = condition, y = discrimination)
 
-#Tenemos muchas opciones para modificarlo
+```
 
+![](5.png)
+
+Tenemos muchas opciones para modificarlo
+
+```{r, warning=FALSE, message=FALSE}
 ggbetweenstats(
   data,
   condition,
@@ -440,8 +610,9 @@ ggbetweenstats(
     ylab("Discrimination scores")
   
 
-
 ```
+
+![](6.png)
 
 Otra forma de hacer gráficos de violín: 
 
@@ -471,6 +642,8 @@ ggplot(data, aes(x=condition, y= discrimination, fill=condition)) +
   theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 
 ```
+
+![](7.png)
 
 Otra posibilidad más: 
 
@@ -510,6 +683,7 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
 
 ```
 
+![](8.png)
 
 Ahora incluyendo si las diferencias son significativas con el paquete 'ggsignif'
 
@@ -554,6 +728,7 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
 
 ```
 
+![](9.png)
 
 También podríamos incluir el resultado directamente con el paquete 'statsExpressions': 
 
@@ -596,8 +771,9 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
 
 ```
 
+![](10.png)
 
-## 7.3. Otros gráficos
+### 7.3. Otros gráficos
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -620,8 +796,9 @@ plot(two.group.effsize, rawplot.ylabel = "Discrimation scores", rawplot.markersi
 
 ```
 
+![](11.png)
 
-## 7.4. Guardar los gráficos
+### 7.4. Guardar los gráficos
 
 Primero guardamos el gráfico como un objeto, por ejemplo el que hemos hecho que combina el boxplot con el violinplot. 
 
