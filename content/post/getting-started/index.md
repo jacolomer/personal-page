@@ -37,8 +37,9 @@ tags:
 categories:
   - Estadística
 
-toc: true
 ---
+
+<!-- toc -->
 
 - [0. Simulando los datos para nuestro ejemplo](#0.%20Simulando%20los%20datos%20para%20nuestro%20ejemplo)
 - [1. Paquetes](#1.%20Paquetes)
@@ -54,7 +55,7 @@ toc: true
   * [7.3. Otros gráficos](#7.3.%20Otros%20gráficos)
   * [7.4. Guardar los gráficos](#7.4.%20Guardar%20los%20gráficos)
 
-<!-- toc -->
+
 
 
 ## 0. Simulando los datos para nuestro ejemplo
