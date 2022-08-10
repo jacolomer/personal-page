@@ -50,7 +50,7 @@ categories:
   * [1.5. Interpretar y transformar el tamaño del efecto](#5.1.-Interpretar-y-transformar-el-tamaño-del-efecto)
 - [6. Test de equivalencias](#6.-Test-del-equivalencias)
 - [7. Representaciones gráficas de diferencias de medias y distribuciones de dos grupos](#7.-Representaciones-gráficas-de-diferencias-de-medias-y-distribuciones-de-dos-grupos)
-  * [7.1. Barplot](#7.1.%-Barplot)
+  * [7.1. Barplot](#7.1.-Barplot)
   * [7.2. Gráficos de violín](#7.2.-Gráficos-de-violín)
   * [7.3. Otros gráficos](#7.3.-Otros-gráficos)
   * [7.4. Guardar los gráficos](#7.4.-Guardar-los-gráficos)
