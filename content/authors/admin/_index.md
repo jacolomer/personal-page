@@ -14,7 +14,7 @@ organizations:
     url: https://www.ugr.es/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include attributions for poverty, social justice orientations.
+bio: My research interests include attributions for poverty, social justice orientations...
 
 # Interests to show in About widget
 interests:
@@ -76,6 +76,12 @@ highlight_name: true
 
 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+Soy un estudiante de doctorado del departamento de psicología social en la Universidad de Granada. Mi investigación se centra, principalmente, en las atribuciones sobre la pobreza, las actitudes hacia justicia redistributiva y hacia la protección social. Además, me interesa el punitivismo hacia las personas desempleadas, las actitudes hacia la democracia y las cuestiones relacionadas con la ciencia abierta. También me gusta utilizar R y leer sobre filosofía de la ciencia. 
+
+---
+
+I am a Ph.D. candidate in Social Psychology at the University of Granada. My research focuses on attributions for poverty, attitudes towards redistributive justice and attitudes toward social protection. In addition, I am interested in punitivism towards unemployed people, attitudes towards democracy and issues related to open science. I also enjoy using R and reading about philosophy of science.
+
+
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/demo_resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
