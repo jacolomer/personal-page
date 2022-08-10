@@ -40,6 +40,20 @@ categories:
 toc: true
 ---
 
+- [0. Simulando los datos para nuestro ejemplo](##0.%20Simulando%20los%20datos%20para%20nuestro%20ejemplo)
+- [1. Paquetes](##1.%20Paquetes)
+- [2. Homogeneidad de las varianzas y normalidad](##2.%20Homogeneidad%20de%20las%20varianzas%20y%20normalidad)
+- [3. Diferencias de medias](##3.%20Diferencias%20de%20medias)
+- [4. La lógica subyacente](##4.%20La%20lógica%20subyacente)
+- [5. Tamaño del efecto](##5.%20Tamaño%20del%20efecto)
+  * [1.5. Interpretar y transformar el tamaño del efecto](###5.1.%20Interpretar%20y%20transformar%20el%20tamaño%20del%20efecto)
+- [6. Test de equivalencias](##6.%20Test%20del%20equivalencias)
+- [7. Representaciones gráficas de diferencias de medias y distribuciones de dos grupos](##7.%207.%20Representaciones%20gráficas%20de%20diferencias%20de%20medias%20y%20distribuciones%20de%20dos%20grupos)
+  * [7.1. Barplot](###7.1.%20Barplot)
+  * [7.2. Gráficos de violín](###7.2.%20Gráficos%20de%20violín)
+  * [7.3. Otros gráficos](###7.3.%20Otros%20gráficos)
+  * [7.4. Guardar los gráficos](###7.4.%20Guardar%20los%20gráficos)
+
 ## 0. Simulando los datos para nuestro ejemplo
 
 Primero simulamos los datos, basándonos en los parámetros del primer estudio de  [Stapel y Lindenberg (2011)](https://science.sciencemag.org/content/332/6026/251.abstract?casa_token=VFzHSJ78wLwAAAAA:3oyCp3jtxNJJf7DBXch4CmNf0K6Q0Ttv2XXuQUZvgcnH6MQzNru95flX_vmsYO-j5X0WhhVwiezjcr_V) sobre cómo influye un contexto ordenado vs desordenado en la discriminación (también simulados, je). Esto es solo para tener unos datos con los que trabajar, en cada ejemplo se explica dónde tendríamos que situar nuestras variables. 
