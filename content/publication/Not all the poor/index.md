@@ -16,7 +16,7 @@ authors:
   #- 'Equal contribution'
 
 date: '2022-10-05T00:00:00Z'
-doi: ''
+doi: 'https://doi.org/10.1007/s12144-022-03804-6'
 
 # Schedule page publish date (NOT publication's date).
 publishDate: '2017-01-01T00:00:00Z'
@@ -28,13 +28,13 @@ publishDate: '2017-01-01T00:00:00Z'
 publication_types: ['2']
 
 # Publication name and optional abbreviated publication name.
-publication: In *Wowchemy Conference*
-publication_short: In *ICW*
+publication: In Current Psychology
+publication_short: In Curr Psy
 
 abstract: The economic crisis of 2008 severely affected the welfare states. As the economic situation of a country worsens, the resources that the public administration can devote to improve the situation of the people also decrease, endangering the advancement of those in a disadvantaged situation. People who have always lived in poverty, besides having their opportunities reduced, also face negative public views that affect the perceived legitimacy of such public aid, which can in turn be a mechanism for perpetuating their situation. Two studies (N = 252 and N = 266) analyse how a person in persistent poverty is perceived compared to a person in poverty due to the crisis—a circumstantial poverty. We also study some feasible mechanisms underlying this different perception, as well as their effects on attitudes toward social protection policies. In Study 1, results indicated that people showed more favourable attitudes toward social protection policies when they perceived someone in poverty due to the crisis, compared to the target who had been in poverty all his/her life. Individualistic attributions for poverty mediated this effect. when people think of someone in persistent poverty, they make more individualistic attributions concerning their situation, which leads to worse attitudes toward social protection policies. Identification with the group moderates this relation. Furthermore, Study 2 showed that participants perceive people who are in poverty because of economic crisis as more deserving of help than people who have always been poor. Some theoretical and practical implications for intergroup relations and public policy are discussed.
 
 # Summary. An optional shortened abstract.
-summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
+#summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
 
 tags: [Attributions for poverty, Attitudes toward social protection]
 
@@ -46,9 +46,9 @@ featured: true
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: ''
-url_code: ''
-url_dataset: ''
+url_pdf: 'Alcañiz-Colomer et al., (2022) Not all the poor are equal.pdf'
+url_code: 'https://osf.io/ne6ug/?view_only=e0a2dd15b1c4495b95c527df89569038.'
+url_dataset: 'https://osf.io/ne6ug/?view_only=e0a2dd15b1c4495b95c527df89569038.'
 url_poster: ''
 url_project: ''
 url_slides: ''
@@ -58,7 +58,7 @@ url_video: ''
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder.
 image:
-  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/pLCdAaMFLTE)'
+  caption: ''
   focal_point: ''
   preview_only: false
 
