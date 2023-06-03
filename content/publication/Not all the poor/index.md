@@ -46,7 +46,7 @@ featured: true
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'Alcañiz-Colomer et al., (2022) Not all the poor are equal.pdf'
+url_pdf: 'https://www.researchgate.net/profile/Joaquin-Alcaniz-Colomer/publication/364176188_Not_all_poor_are_equal_the_perpetuation_of_poverty_through_blaming_those_who_have_been_poor_all_their_lives/links/633d863fff870c55ce0261fb/Not-all-poor-are-equal-the-perpetuation-of-poverty-through-blaming-those-who-have-been-poor-all-their-lives.pdf'
 url_code: 'https://osf.io/ne6ug/?view_only=e0a2dd15b1c4495b95c527df89569038.'
 url_dataset: 'https://osf.io/ne6ug/?view_only=e0a2dd15b1c4495b95c527df89569038.'
 url_poster: ''
