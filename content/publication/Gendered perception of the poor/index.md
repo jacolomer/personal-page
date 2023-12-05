@@ -46,7 +46,7 @@ featured: true
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'files/sexroles23.pdf'
+url_pdf: 'static/uploads/sexroles23.pdf'
 url_code: 'https://osf.io/c7qfw/?view_only=17e978b6cff640d4b06114c96fae0f77'
 url_dataset: 'https://osf.io/c7qfw/?view_only=17e978b6cff640d4b06114c96fae0f77'
 url_poster: ''
