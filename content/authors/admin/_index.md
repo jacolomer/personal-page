@@ -6,15 +6,15 @@ title: Joaquín Alcañiz Colomer
 superuser: true
 
 # Role/position/tagline
-role: Social Psychology Phd. Student at University of Granada
+role: Postdoctoral researcher on the WHOCOUNTS project at IGOP, Universitat Autònoma de Barcelona.
 
 # Organizations/Affiliations to show in About widget
 organizations:
-  - name: University of Granada
-    url: https://www.ugr.es/
+  - name: IGOP
+    url: https://igop.uab.cat/es/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include attributions for poverty, social justice orientations...
+bio: My research interests include social policies, attributions for poverty, punitive attitudes...
 
 # Interests to show in About widget
 interests:
@@ -23,6 +23,7 @@ interests:
   - Attributions for poverty
   - Poverty perception
   - Punitive attitudes toward people in poverty
+  - Socioeconomic status
 
 # Education to show in About widget
 education:
@@ -51,9 +52,9 @@ social:
   - icon: twitter
     icon_pack: fab
     link: https://twitter.com/jacolomer2
- # - icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
-  #  icon_pack: fas
-   # link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
+  - icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
+    icon_pack: fas
+    link: https://scholar.google.com/citations?user=lskhGOkAAAAJ&hl=es&oi=ao
   - icon: github
     icon_pack: fab
     link: https://github.com/jacolomer
@@ -77,11 +78,11 @@ highlight_name: true
 
 
 
-Soy un estudiante de doctorado del departamento de psicología social en la Universidad de Granada. Mi investigación se centra, principalmente, en las atribuciones sobre la pobreza, las actitudes hacia justicia redistributiva y hacia la protección social. Además, me interesa el punitivismo hacia las personas desempleadas, las actitudes hacia la democracia y las cuestiones relacionadas con la ciencia abierta. También me gusta utilizar R y leer sobre filosofía de la ciencia. 
+Soy investigador postdoctoral en el proyecto [WHOCOUNTS](https://cordis.europa.eu/project/id/101077363), dirigido por Daniel Edmiston en el IGOP, Universitat Autònoma de Barcelona. La mayor parte de mi investigación gira en torno al estudio de la pobreza desde diferentes perspectivas. Por una parte, cómo la gente percibe a las personas en situación de pobreza y reacciona a ella, haciendo énfasis en las atribuciones sobre la pobreza o las definiciones que se hacen sobre ella. Actualmente, dentro del proyecto estoy trabajando aspectos relacionados con los efectos de la pobreza severa a largo plazo, las dinámicas de bajos ingresos, la incorporación de poblaciones excluidas de las estadísticas sobre la pobreza (e.g., personas sin hogar), etc. También me interesa el estudio de la clase social y el estatus socioeconómico desde una perspectiva psicosocial, así como los aspectos metódologicos y de medida relacionados con ello. También disfruto leyendo sobre filosofía de la ciencia y, a veces, utilizando R. 
 
 ---
 
-I am a Ph.D. candidate in Social Psychology at the University of Granada. My research focuses on attributions for poverty, attitudes towards redistributive justice and attitudes toward social protection. In addition, I am interested in punitivism towards unemployed people, attitudes towards democracy and issues related to open science. I also enjoy using R and reading about philosophy of science.
+I am a postdoctoral researcher on the [WHOCOUNTS](https://cordis.europa.eu/project/id/101077363) project, led by Daniel Edmiston at IGOP, Universitat Autònoma de Barcelona. Most of my research focuses on the study of poverty from various perspectives. On one hand, I explore how people perceive and react to those in poverty, emphasizing attributions for poverty or how people define poverty. Currently, within the project, I am working on aspects related to the long-term effects of severe poverty, low-income dynamics, and the inclusion of populations excluded from poverty statistics (e.g., homeless people), among others. I am also interested in studying social class and socioeconomic status from a psychosocial perspective, as well as the methodological and measurement aspects related to it. Additionally, I enjoy reading about the philosophy of science and, occasionally, using R.
 
 
 
