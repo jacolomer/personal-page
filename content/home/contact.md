@@ -25,12 +25,12 @@ content:
       captcha: false
 
   # Contact details (edit or remove options as required)
-  email: jcolomer@ugr.es
+  email: Joaquin.Alcaniz@uab.cat
   address:
-    street: Campus Universitario de Cartuja
-    city: Granada
-    region: Granada
-    postcode: '18011'
+    street: Mòdul de Recerca A, Parc de Recerca de la UAB
+    city: Bellaterra
+    region: Barcelona
+    postcode: '08193'
     country: España
     country_code: ES
   contact_links:
