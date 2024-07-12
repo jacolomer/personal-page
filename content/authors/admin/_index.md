@@ -18,17 +18,18 @@ bio: My research interests include attributions for poverty, social justice orie
 
 # Interests to show in About widget
 interests:
+  - Social policies
+  - Poverty measurement
   - Attributions for poverty
   - Poverty perception
-  - Punitive attitudes toward unemployed
-  - Social justice orientations
+  - Punitive attitudes toward people in poverty
 
 # Education to show in About widget
 education:
   courses:
     - course: Ph.D. Candidate in Social Psychology
       institution: University of Granada
-      year: 2018-
+      year: 2018-2023
     - course: Master's Degree in Social Problems
       institution: University of Granada
       year: 2017-2019
