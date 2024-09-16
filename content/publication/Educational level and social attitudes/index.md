@@ -45,7 +45,7 @@ featured: true
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'Alcañiz-Colomer & Moya (2024) Educational level and social attitudes_ unraveling patterns and methodological considerations.pdf'
+url_pdf: ''
 url_code: 'https://osf.io/j7ebq/?view_only=0f2e390ab67e486da276bc39e49704a6'
 url_dataset: 'https://osf.io/j7ebq/?view_only=0f2e390ab67e486da276bc39e49704a6'
 url_poster: ''
