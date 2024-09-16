@@ -8,13 +8,14 @@ authors:
   - admin
   - Miguel Moya
 
+
 # Author notes (optional)
 #author_notes:
  # - 'Equal contribution'
   #- 'Equal contribution'
   #- 'Equal contribution'
 
-date: '2024-07-24T00:00:00Z'
+date: '2024-07-23T00:00:00Z'
 doi: 'https://doi.org/10.21071/pse.v16i2.17078'
 
 # Schedule page publish date (NOT publication's date).
