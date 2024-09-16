@@ -31,7 +31,7 @@ publication_types: ['2']
 publication: In International Journal of Social Psychology
 publication_short: In International Journal of Social Psychology
 
-abstract: "Studies on socioeconomic status (SES) have recently increased in social psychology. The most used indicators to measure objective SES are income and educational level (usually standardizing and summing the scores of these variables). However, income and education possibly have different, even opposite effects on certain variables. Across seven studies, using data from previous research and from international databases, we show that this is true both for prosocial behaviour and for variables related to prosocial behaviour. A higher educational level tends to positively predict prosocial behaviour (Studies 1a–1d) and structural attributions of poverty (Studies 2 and 3), and negatively predict scores for meritocratic beliefs (Study 3) and just world beliefs (Study 4). In most cases, income showed a reverse trend or did not predict the outcome. We discuss the broader implications both for the study of prosocial behaviour and social class."
+abstract: Studies on socioeconomic status (SES) have recently increased in social psychology. The most used indicators to measure objective SES are income and educational level (usually standardizing and summing the scores of these variables). However, income and education possibly have different, even opposite effects on certain variables. Across seven studies, using data from previous research and from international databases, we show that this is true both for prosocial behaviour and for variables related to prosocial behaviour. A higher educational level tends to positively predict prosocial behaviour (Studies 1a–1d) and structural attributions of poverty (Studies 2 and 3), and negatively predict scores for meritocratic beliefs (Study 3) and just world beliefs (Study 4). In most cases, income showed a reverse trend or did not predict the outcome. We discuss the broader implications both for the study of prosocial behaviour and social class.
 
 # Summary. An optional shortened abstract.
 #summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
@@ -78,12 +78,3 @@ image:
 #slides: example
 ---
 
-{{% callout note %}}
-Click the _Cite_ button above to demo the feature to enable visitors to import publication metadata into their reference management software.
-{{% /callout %}}
-
-{{% callout note %}}
-Create your slides in Markdown - click the _Slides_ button to check out the example.
-{{% /callout %}}
-
-#Supplementary notes can be added here, including [code, math, and images](https://wowchemy.com/docs/writing-markdown-latex/).
