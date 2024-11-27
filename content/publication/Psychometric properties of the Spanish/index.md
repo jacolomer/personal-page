@@ -57,7 +57,7 @@ featured: true
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: ''
+url_pdf: 'static/uploads/23166_Phubbing_NP_Artículo final.pdf'
 url_code: 'https://osf.io/7tvd9/?view_only=263d2c0f47e8424fa63a0a28ada30e93'
 url_dataset: 'https://osf.io/7tvd9/?view_only=263d2c0f47e8424fa63a0a28ada30e93'
 url_poster: ''
