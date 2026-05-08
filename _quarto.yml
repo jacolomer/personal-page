@@ -1,0 +1,57 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - publications.qmd
+    - cv.qmd
+    - blog/index.qmd
+    - blog/posts/**/*.qmd
+
+website:
+  title: "Joaquín Alcañiz Colomer"
+  description: "Postdoctoral researcher at IGOP, UAB. Social psychology, poverty perception, socioeconomic status."
+  favicon: assets/icon.png
+
+  navbar:
+    background: dark
+    foreground: light
+    left:
+      - text: "About"
+        href: index.qmd
+      - text: "Publications"
+        href: publications.qmd
+      - text: "Blog"
+        href: blog/index.qmd
+      - text: "CV"
+        href: cv.qmd
+    right:
+      - icon: twitter
+        href: https://twitter.com/jacolomer2
+        aria-label: Twitter/X
+      - icon: github
+        href: https://github.com/jacolomer
+        aria-label: GitHub
+      - text: "Scholar"
+        href: https://scholar.google.com/citations?user=lskhGOkAAAAJ&hl=es&oi=ao
+        aria-label: Google Scholar
+
+  page-footer:
+    left: "© 2024 Joaquín Alcañiz Colomer"
+    center: "Built with [Quarto](https://quarto.org)"
+    right:
+      - icon: twitter
+        href: https://twitter.com/jacolomer2
+      - icon: github
+        href: https://github.com/jacolomer
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: false
+    link-external-newwindow: true
+    grid:
+      sidebar-width: 0px
+      body-width: 900px
+      margin-width: 300px

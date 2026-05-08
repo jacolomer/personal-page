@@ -1,0 +1,302 @@
+/* -----------------------------------------------
+   Joaquín Alcañiz Colomer — Personal Academic Site
+   Custom styles for Quarto + Cosmo theme
+   ----------------------------------------------- */
+
+/* --- Typography & Base --- */
+body {
+  font-family: "Source Serif 4", Georgia, serif;
+  color: #2d2d2d;
+}
+
+.navbar-brand, nav, .navbar {
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+}
+
+/* --- Home / About page --- */
+.about-container {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+@media (max-width: 680px) {
+  .about-container {
+    grid-template-columns: 1fr;
+  }
+  .about-photo {
+    margin: 0 auto;
+  }
+}
+
+.about-photo img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #dee2e6;
+  display: block;
+}
+
+.about-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+}
+
+.about-role {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-family: "Inter", sans-serif;
+}
+
+.about-links {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.about-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #495057;
+  font-family: "Inter", sans-serif;
+  transition: background 0.15s;
+}
+
+.about-links a:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+  text-decoration: none;
+}
+
+.interests-edu {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 680px) {
+  .interests-edu {
+    grid-template-columns: 1fr;
+  }
+}
+
+.interests-edu h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6c757d;
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.interests-edu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.interests-edu li {
+  padding: 0.2rem 0;
+  font-size: 0.95rem;
+}
+
+.interests-edu li::before {
+  content: "→ ";
+  color: #6c757d;
+}
+
+/* Education entries */
+.edu-entry {
+  margin-bottom: 0.8rem;
+}
+
+.edu-entry strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.edu-entry span {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* --- Publication cards --- */
+.pub-list {
+  margin-top: 1.5rem;
+}
+
+.pub-card {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 1.2rem;
+  transition: box-shadow 0.2s;
+  background: #fff;
+}
+
+.pub-card:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.pub-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+  color: #212529;
+}
+
+.pub-authors {
+  font-size: 0.88rem;
+  color: #6c757d;
+  margin-bottom: 0.3rem;
+}
+
+.pub-journal {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #495057;
+  margin-bottom: 0.6rem;
+}
+
+.pub-abstract {
+  font-size: 0.88rem;
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+  display: none;
+}
+
+.pub-abstract.open {
+  display: block;
+}
+
+.pub-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.pub-tag {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 20px;
+  background: #e9ecef;
+  color: #495057;
+  font-family: "Inter", sans-serif;
+}
+
+.pub-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pub-links a {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.pub-links a:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.btn-doi   { background: #e9ecef; color: #495057; border: 1px solid #dee2e6; }
+.btn-pdf   { background: #dc3545; color: #fff; }
+.btn-code  { background: #6c757d; color: #fff; }
+.btn-abs   { background: transparent; color: #0d6efd; border: 1px solid #0d6efd; cursor: pointer; }
+
+/* --- CV --- */
+.cv-section {
+  margin-bottom: 2.5rem;
+}
+
+.cv-section h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6c757d;
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.cv-entry {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 540px) {
+  .cv-entry {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cv-year {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-family: "Inter", sans-serif;
+  padding-top: 0.1rem;
+}
+
+.cv-body strong {
+  font-size: 0.98rem;
+  display: block;
+}
+
+.cv-body span {
+  font-size: 0.88rem;
+  color: #6c757d;
+}
+
+/* --- Blog --- */
+.blog-listing .quarto-post {
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Section divider --- */
+.section-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 0.4rem;
+  font-family: "Inter", sans-serif;
+}
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');

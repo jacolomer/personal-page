@@ -1,21 +1,23 @@
+# Netlify configuration for Quarto website
+# The site is pre-rendered locally with `quarto render`
+# and the _site/ folder is committed to the repository.
+# Netlify simply serves the static output — no build step needed.
+
 [build]
-  command = "hugo --gc --minify -b $URL"
-  publish = "public"
+  publish = "_site"
 
-[build.environment]
-  HUGO_VERSION = "0.97.3"
-  HUGO_ENABLEGITINFO = "true"
+# Redirect rules (optional, for clean URLs)
+[[redirects]]
+  from = "/publications"
+  to = "/publications.html"
+  status = 200
 
-[context.production.environment]
-  HUGO_ENV = "production"
+[[redirects]]
+  from = "/cv"
+  to = "/cv.html"
+  status = 200
 
-[context.deploy-preview]
-  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
-
-[context.branch-deploy]
-  command = "hugo --gc --minify -b $DEPLOY_PRIME_URL"
-
-[[plugins]]
-  package = "netlify-plugin-hugo-cache-resources"
-  [plugins.inputs]
-    debug = true
+[[redirects]]
+  from = "/blog"
+  to = "/blog/index.html"
+  status = 200

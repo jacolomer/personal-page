@@ -1,0 +1,37 @@
+---
+title: "Why how we measure poverty matters"
+description: "A brief reflection on the methodological choices behind poverty measurement and why they have real political and social consequences."
+date: "2024-01-15"
+categories: [poverty, methodology, social science]
+image: ""
+---
+
+Poverty is not an objective fact waiting to be observed. It is a construct — shaped by the definitions we choose, the thresholds we set, and the populations we decide to count. This post is a brief reflection on why these choices are far from neutral.
+
+## Counting who counts
+
+Most official poverty statistics rely on income or consumption thresholds, often defined relative to the median of a given country. Someone is "poor" if they fall below a certain percentage of that median. This is the approach used by Eurostat (60% of the national median equivalized income) and echoed across most national statistical systems.
+
+The simplicity is its strength — and its limitation. It tells us something important about relative economic position, but it misses populations who may not appear in household surveys at all: people experiencing homelessness, those in informal housing, or migrants in precarious administrative situations. These are precisely the people most likely to be living in the most severe forms of deprivation, and they are structurally absent from the numbers.
+
+This is one of the core questions we are exploring in the [WHOCOUNTS](https://cordis.europa.eu/project/id/101077363) project.
+
+## The political life of definitions
+
+Measurement is never purely technical. The way we operationalize poverty shapes what interventions seem appropriate and who is deemed "deserving" of public support.
+
+Research in social psychology has consistently shown that attributions for poverty — whether people explain poverty as the result of individual failures or structural conditions — strongly predict support for redistribution and social protection policies. But these attributions do not emerge in a vacuum. They are shaped, in part, by the stories official statistics tell about who the poor are and how they got there.
+
+When persistent, multigenerational poverty is rendered invisible in the data, it becomes harder to argue for structural explanations — and easier to sustain individualistic ones.
+
+## A note on education and SES measurement
+
+A similar issue appears in how we operationalize socioeconomic status in academic research. Income and educational level are routinely summed into composite SES scores, as if they were interchangeable proxies for the same underlying construct. But our research has shown that income and education often predict outcomes in opposite directions — particularly for prosocial attitudes and poverty attributions.
+
+This has practical consequences for how we design and interpret studies. Using a composite SES score may mask important heterogeneity, producing results that are difficult to replicate or interpret.
+
+## Keeping this in mind
+
+These are not purely academic concerns. Definitions have constituencies. The groups excluded from official poverty counts tend to be those with the least political voice, making their exclusion self-reinforcing. Research that takes measurement seriously — that asks not just "how much poverty?" but "whose poverty?" and "measured how?" — contributes to a more honest public conversation.
+
+That is, at least, what I try to keep in mind.

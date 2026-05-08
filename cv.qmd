@@ -1,0 +1,137 @@
+---
+title: "Curriculum Vitae"
+---
+
+```{=html}
+<p style="margin-bottom:1.5rem;">
+  <a class="btn-pdf" href="static/uploads/resume.pdf" target="_blank"
+     style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;border-radius:5px;text-decoration:none;font-family:'Inter',sans-serif;font-size:0.9rem;">
+    <i class="bi bi-file-earmark-arrow-down-fill"></i> Download full CV (PDF)
+  </a>
+</p>
+
+<!-- CURRENT POSITION -->
+<div class="cv-section">
+  <h2>Current Position</h2>
+
+  <div class="cv-entry">
+    <div class="cv-year">2023 – present</div>
+    <div class="cv-body">
+      <strong>Postdoctoral Researcher</strong>
+      <span>IGOP, Universitat Autònoma de Barcelona</span>
+      <span>WHOCOUNTS project (EU Horizon, PI: Daniel Edmiston)</span>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="cv-section">
+  <h2>Education</h2>
+
+  <div class="cv-entry">
+    <div class="cv-year">2018 – 2023</div>
+    <div class="cv-body">
+      <strong>Ph.D. in Social Psychology</strong>
+      <span>University of Granada</span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2017 – 2019</div>
+    <div class="cv-body">
+      <strong>Master's Degree in Social Problems</strong>
+      <span>University of Granada</span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2016 – 2017</div>
+    <div class="cv-body">
+      <strong>Master's Degree in Psychology of Social Intervention</strong>
+      <span>University of Granada</span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2012 – 2016</div>
+    <div class="cv-body">
+      <strong>Bachelor's Degree in Psychology</strong>
+      <span>University of Valencia</span>
+    </div>
+  </div>
+</div>
+
+<!-- PUBLICATIONS -->
+<div class="cv-section">
+  <h2>Peer-Reviewed Publications</h2>
+
+  <div class="cv-entry">
+    <div class="cv-year">2024</div>
+    <div class="cv-body">
+      <strong>Educational level and social attitudes: unraveling patterns and methodological considerations</strong>
+      <span>Alcañiz-Colomer, J. &amp; Moya, M. · <em>Psychology, Society &amp; Education</em></span>
+      <span><a href="https://doi.org/10.21071/pse.v16i2.17078" target="_blank">https://doi.org/10.21071/pse.v16i2.17078</a></span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2024</div>
+    <div class="cv-body">
+      <strong>Psychometric properties of the Spanish adaptation of the General Phubbing Scale</strong>
+      <span>Ruiz, M.J., Herruzo, C. &amp; Alcañiz-Colomer, J. · <em>Revista Latinoamericana de Psicología</em></span>
+      <span><a href="https://doi.org/10.14349/rlp.2024.v56.7" target="_blank">https://doi.org/10.14349/rlp.2024.v56.7</a></span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2023</div>
+    <div class="cv-body">
+      <strong>Gendered Social Perceptions of "The Poor": Differences in Individualistic Attributions, Stereotypes, and Attitudes Toward Social Protection Policies</strong>
+      <span>Alcañiz-Colomer, J., Moya, M. &amp; Valor-Segura, I. · <em>Sex Roles</em></span>
+      <span><a href="https://doi.org/10.1007/s11199-023-01375-9" target="_blank">https://doi.org/10.1007/s11199-023-01375-9</a></span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2023</div>
+    <div class="cv-body">
+      <strong>The different effects of income and educational level on prosocial behaviour and related ideological variables</strong>
+      <span>Moya, M. &amp; Alcañiz-Colomer, J. · <em>International Journal of Social Psychology</em></span>
+      <span><a href="https://doi.org/10.1080/02134748.2023.2229171" target="_blank">https://doi.org/10.1080/02134748.2023.2229171</a></span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2023</div>
+    <div class="cv-body">
+      <strong>Social justice orientations: Exploring their impact on poverty attributions and support for social protection</strong>
+      <span>Alcañiz-Colomer, J., Valor-Segura, I. &amp; Moya, M. · <em>Political Psychology</em></span>
+      <span><a href="https://doi.org/10.1111/pops.12937" target="_blank">https://doi.org/10.1111/pops.12937</a></span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2023</div>
+    <div class="cv-body">
+      <strong>Inhuman animals: moving dehumanization into the domain of human–animal relations</strong>
+      <span>Gradidge, S., Alcañiz-Colomer, J. &amp; Loughnan, S. · <em>Current Opinion in Behavioral Sciences</em></span>
+      <span><a href="https://doi.org/10.1016/j.cobeha.2023.101249" target="_blank">https://doi.org/10.1016/j.cobeha.2023.101249</a></span>
+    </div>
+  </div>
+
+  <div class="cv-entry">
+    <div class="cv-year">2022</div>
+    <div class="cv-body">
+      <strong>Not all poor are equal: the perpetuation of poverty through blaming those who have been poor all their lives</strong>
+      <span>Alcañiz-Colomer, J., Moya, M. &amp; Valor-Segura, I. · <em>Current Psychology</em></span>
+      <span><a href="https://doi.org/10.1007/s12144-022-03804-6" target="_blank">https://doi.org/10.1007/s12144-022-03804-6</a></span>
+    </div>
+  </div>
+</div>
+
+<!-- RESEARCH INTERESTS -->
+<div class="cv-section">
+  <h2>Research Interests</h2>
+  <p>Poverty perception and attributions · Social policies and redistribution · Socioeconomic status measurement · Poverty dynamics · Punitive attitudes toward people in poverty · Social class from a psychosocial perspective · Philosophy of science</p>
+</div>
+```
