@@ -220,8 +220,8 @@ hedges_g(discrimination ~ condition, data = data, pooled_sd = FALSE)
 Usar los puntos de referencia de Cohen puede ser problemático, ya que no tienen en cuenta el marco de referencia específico. Una alternativa es usar las guías basadas en los tamaños del efecto habituales en psicología social [(Lovakov & Agadullina, 2021)](https://onlinelibrary.wiley.com/doi/full/10.1002/ejsp.2752?casa_token=PmPfBBvNPCkAAAAA%3AT1_sP2N3IYi9r14sUyov3O0_6agZCH1Ca_ysoURGjg9x_zraGhcs0gYCrkEPzdSUBfC-Rkq7A_xD0wtKHg), donde los percentiles 25, 50 y 75 corresponden a d = 0.15, 0.36 y 0.65.
 
 ```{r}
-interpret_d(1.10, rules = "cohen1988")
-interpret_d(1.10, rules = "lovakov2021")
+effectsize::interpret_cohens_d(1.10, rules = "cohen1988")
+effectsize::interpret_cohens_d(1.10, rules = "lovakov2021")
 ```
 
 También podemos transformar la d de Cohen a un coeficiente de correlación:
