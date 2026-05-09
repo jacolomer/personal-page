@@ -113,6 +113,7 @@ title: "Publications"
     </div>
     <div class="pub-links">
       <a class="btn-doi" href="https://doi.org/10.1080/02134748.2023.2229171" target="_blank">DOI</a>
+      <a class="btn-pdf" href="static/uploads/AVMoyaandAlcaizColomer2023Incomeandeducation.pdf" target="_blank">PDF</a>
       <a class="btn-code" href="https://osf.io/fb96j/" target="_blank">Data &amp; Code</a>
       <button class="btn-abs" onclick="toggleAbs('abs4')">Abstract</button>
     </div>
@@ -141,7 +142,7 @@ title: "Publications"
     </div>
     <div class="pub-links">
       <a class="btn-doi" href="https://doi.org/10.1111/pops.12937" target="_blank">DOI</a>
-      <a class="btn-pdf" href="https://onlinelibrary.wiley.com/doi/pdf/10.1111/pops.12937" target="_blank">PDF</a>
+      <a class="btn-pdf" href="static/uploads/polpsy23.pdf" target="_blank">PDF</a>
       <a class="btn-code" href="https://osf.io/xe29n/?view_only=9e9d24ae07a44627a9d57aa0b7cd33ec" target="_blank">Data &amp; Code</a>
       <button class="btn-abs" onclick="toggleAbs('abs5')">Abstract</button>
     </div>
@@ -168,6 +169,7 @@ title: "Publications"
     </div>
     <div class="pub-links">
       <a class="btn-doi" href="https://doi.org/10.1016/j.cobeha.2023.101249" target="_blank">DOI</a>
+      <a class="btn-pdf" href="static/uploads/cobs23.pdf" target="_blank">PDF</a>
       <button class="btn-abs" onclick="toggleAbs('abs6')">Abstract</button>
     </div>
   </div>
@@ -194,7 +196,7 @@ title: "Publications"
     </div>
     <div class="pub-links">
       <a class="btn-doi" href="https://doi.org/10.1007/s12144-022-03804-6" target="_blank">DOI</a>
-      <a class="btn-pdf" href="https://www.researchgate.net/profile/Joaquin-Alcaniz-Colomer/publication/364176188_Not_all_poor_are_equal_the_perpetuation_of_poverty_through_blaming_those_who_have_been_poor_all_their_lives/links/633d863fff870c55ce0261fb/Not-all-poor-are-equal-the-perpetuation-of-poverty-through-blaming-those-who-have-been-poor-all-their-lives.pdf" target="_blank">PDF</a>
+      <a class="btn-pdf" href="static/uploads/currpsy22.pdf" target="_blank">PDF</a>
       <a class="btn-code" href="https://osf.io/ne6ug/?view_only=e0a2dd15b1c4495b95c527df89569038" target="_blank">Data &amp; Code</a>
       <button class="btn-abs" onclick="toggleAbs('abs7')">Abstract</button>
     </div>
