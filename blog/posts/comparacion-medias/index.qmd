@@ -13,13 +13,13 @@ toc-title: "Contenidos"
 Primero simulamos los datos, basándonos en los parámetros del primer estudio de [Stapel y Lindenberg (2011)](https://science.sciencemag.org/content/332/6026/251.abstract?casa_token=VFzHSJ78wLwAAAAA:3oyCp3jtxNJJf7DBXch4CmNf0K6Q0Ttv2XXuQUZvgcnH6MQzNru95flX_vmsYO-j5X0WhhVwiezjcr_V) sobre cómo influye un contexto ordenado vs desordenado en la discriminación (también simulados, je). Esto es solo para tener unos datos con los que trabajar; en cada ejemplo se explica dónde tendríamos que situar nuestras variables.
 
 ```{r}
-discrimination <- (rnorm(n = 40, mean = 5.12, sd = 1.01)) # Datos para el grupo 1
+set.seed(42) # Para reproducibilidad
 
+discrimination <- rnorm(n = 40, mean = 5.12, sd = 1.01) # Datos para el grupo 1
 data0 <- as.data.frame(discrimination)
 data0$condition <- 1
 
 discrimination <- rnorm(n = 40, mean = 4.28, sd = 1.03) # Datos para el grupo 2
-
 data1 <- as.data.frame(discrimination)
 data1$condition <- 2
 
@@ -103,16 +103,18 @@ t.test(discrimination ~ condition, data = data, alternative = "two.sided", var.e
 t.test(discrimination ~ condition, data = data, alternative = "two.sided", var.equal = FALSE)
 ```
 
-**Medidas repetidas:**
+**Medidas repetidas:** la interfaz de fórmula no admite `paired = TRUE`, así que extraemos los vectores directamente:
 
 ```{r}
-t.test(discrimination ~ condition, data = data, alternative = "two.sided", paired = TRUE, var.equal = TRUE)
+chaos <- data$discrimination[data$condition == "Chaos condition"]
+orden <- data$discrimination[data$condition == "Order condition"]
+t.test(chaos, orden, alternative = "two.sided", paired = TRUE)
 ```
 
 **Test no paramétrico (Wilcoxon)**, si los datos no siguen una distribución normal:
 
 ```{r}
-wilcox.test(data$discrimination ~ data$condition, alternative = "two.sided", paired = FALSE)
+wilcox.test(data$discrimination ~ data$condition, alternative = "two.sided")
 ```
 
 ## 4. La lógica subyacente
@@ -131,8 +133,6 @@ El código de este apartado está tomado de una entrada del blog de [Andrew Heis
 #| message: false
 #| warning: false
 library(infer)
-# remotes::install_github("brooke-watson/bplots") # si no está instalado
-library(bplots)
 library(scales)
 ```
 
@@ -161,12 +161,12 @@ medboot %>%
   visualize() +
   shade_confidence_interval(boostrapped_confint,
     color = "#8bc5ed", fill = "#85d9d2") +
-  geom_vline(xintercept = difmed$stat, size = 1, color = "#77002c") +
+  geom_vline(xintercept = difmed$stat, linewidth = 1, color = "#77002c") +
   labs(
     title = "Distribución 'bootstrapped' de la diferencia de medias",
     x = "Chaos condition - Order condition", y = "Count",
     subtitle = "La línea roja muestra la diferencia observada; la zona sombreada el IC al 95%") +
-  theme_fancy()
+  theme_classic()
 ```
 
 ![](1.png)
@@ -184,14 +184,14 @@ cond_diffs_null <- data %>%
 
 cond_diffs_null %>%
   visualize() +
-  geom_vline(xintercept = difmed$stat, size = 1, color = "#77002c") +
+  geom_vline(xintercept = difmed$stat, linewidth = 1, color = "#77002c") +
   scale_y_continuous(labels = comma) +
   labs(
     x = "Diferencia simulada en las medias (Chaos condition - Order condition)",
     y = "Count",
     title = "Distribución nula de las diferencias de medias basada en la simulación",
     subtitle = "La línea roja muestra la diferencia observada") +
-  theme_fancy()
+  theme_classic()
 ```
 
 ![](2.png)
@@ -210,9 +210,9 @@ cond_diffs_null %>%
 Si asumimos varianzas iguales, lo usual es la **d de Cohen**. Si no podemos asumirlo, se recomienda la **g de Hedges** [(Delacre et al., 2021)](https://psyarxiv.com/tu6mp/).
 
 ```{r}
-cohens_d(data$discrimination, y = data$condition, ci = 0.95, pooled_sd = TRUE)
+cohens_d(discrimination ~ condition, data = data, pooled_sd = TRUE)
 
-hedges_g(data$discrimination, y = data$condition, ci = 0.95, pooled_sd = FALSE)
+hedges_g(discrimination ~ condition, data = data, pooled_sd = FALSE)
 ```
 
 ### 5.1. Interpretar y transformar el tamaño del efecto
@@ -239,15 +239,18 @@ La idea: establecer a priori un límite superior e inferior de equivalencia bas�
 En nuestro caso, siguiendo a Stapel y Lindenberg (2011), determinamos el SESOI como el tamaño del efecto detectable con un poder del 33% [(Simonsohn, 2015)](https://journals.sagepub.com/doi/full/10.1177/0956797614567341?casa_token=h5QriJpfjv8AAAAA%3Awbyl5p2W703wEgvkTuRyqPwewXG3iGGEYyc4kbm-0DiEFbJasPhMTguTnZnceDpU3XTH47R5hbdgSBs), que sería d = 0.34.
 
 ```{r}
+#| warning: false
 library(TOSTER)
 
-TOSTtwo(
+# tsum_TOST() es la función actualizada (TOSTtwo() está deprecada en TOSTER >= 0.4)
+tsum_TOST(
   m1 = 5.218811, m2 = 4.031867,
   sd1 = 1.088976, sd2 = 1.072184,
   n1 = 40, n2 = 40,
-  low_eqbound_d = -0.34, high_eqbound_d = 0.34,
-  alpha = 0.05, var.equal = TRUE,
-  plot = TRUE, verbose = TRUE)
+  low_eqbound = -0.34, high_eqbound = 0.34,
+  eqbound_type = "SMD",
+  alpha = 0.05,
+  var.equal = TRUE)
 ```
 
 ![](3.png)
@@ -259,6 +262,7 @@ El output nos indica que el efecto **no es estadísticamente equivalente a cero*
 ### 7.1. Barplot
 
 ```{r}
+#| warning: false
 library(ggpubr)
 
 infograph <- data %>%
@@ -270,10 +274,10 @@ infograph <- data %>%
 pal <- c("#009E73", "#E69F00") # Paleta colorblind-friendly
 
 barplt <- ggplot(infograph) +
-  geom_col(aes(x = condition, y = mean, fill = pal), alpha = 1, width = 0.6) +
+  geom_col(aes(x = condition, y = mean, fill = condition), alpha = 1, width = 0.6) +
   scale_fill_manual(values = pal) +
   geom_errorbar(aes(x = condition, ymin = mean - ic, ymax = mean + ic),
-    width = 0.2, colour = "black", alpha = 0.9, size = 0.5) +
+    width = 0.2, colour = "black", alpha = 0.9, linewidth = 0.5) +
   ggtitle("Differences between experimental conditions (using confidence intervals)") +
   xlab("Experimental Condition") +
   ylab("Discrimination scores")
@@ -324,7 +328,6 @@ Otra forma con `ggplot2`:
 #| warning: false
 #| message: false
 library(viridis)
-library(hrbrthemes)
 
 ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   geom_violin() +
@@ -343,10 +346,10 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
 ```{r}
 #| warning: false
 #| message: false
-library(gghalves)
+library(ggdist)
 
 ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
-  ggdist::stat_halfeye(adjust = .5, width = .6, .width = 0,
+  stat_halfeye(adjust = .5, width = .6, .width = 0,
     justification = -.3, point_colour = NA) +
   geom_boxplot(width = .20, outlier.shape = NA) +
   geom_point(size = 2, alpha = .5,
@@ -355,7 +358,8 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   scale_fill_manual(values = c("#56B4E9", "#D55E00")) +
   ggtitle("Discrimination scores in both conditions") +
   xlab("") +
-  ylab("Discrimination scores")
+  ylab("Discrimination scores") +
+  theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 ```
 
 ![](8.png)
@@ -368,7 +372,7 @@ Añadiendo la significación estadística con `ggsignif`:
 library(ggsignif)
 
 ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
-  ggdist::stat_halfeye(adjust = .5, width = .6, .width = 0,
+  stat_halfeye(adjust = .5, width = .6, .width = 0,
     justification = -.3, point_colour = NA) +
   geom_boxplot(width = .20, outlier.shape = NA) +
   geom_signif(comparisons = list(c("Chaos condition", "Order condition")),
@@ -379,7 +383,8 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   scale_fill_manual(values = c("#56B4E9", "#D55E00")) +
   ggtitle("Discrimination scores in both conditions") +
   xlab("") +
-  ylab("Discrimination scores")
+  ylab("Discrimination scores") +
+  theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 ```
 
 ![](9.png)
@@ -391,10 +396,14 @@ Incluyendo el resultado estadístico directamente con `statsExpressions`:
 #| message: false
 library(statsExpressions)
 
-expresion <- two_sample_test(condition, discrimination, data = data, alternative = "two.sided")
+expresion <- two_sample_test(
+  data = data,
+  x = condition,
+  y = discrimination,
+  alternative = "two.sided")
 
 ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
-  ggdist::stat_halfeye(adjust = .5, width = .6, .width = 0,
+  stat_halfeye(adjust = .5, width = .6, .width = 0,
     justification = -.3, point_colour = NA) +
   geom_boxplot(width = .20, outlier.shape = NA) +
   geom_point(size = 2, alpha = .5,
@@ -404,16 +413,20 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   ggtitle("Discrimination scores in both conditions",
     subtitle = expresion$expression[[1]]) +
   xlab("") +
-  ylab("Discrimination scores")
+  ylab("Discrimination scores") +
+  theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 ```
 
 ![](10.png)
 
 ### 7.3. Estimation plots con `dabestr`
 
+::: {.callout-note}
+La API de `dabestr` cambió significativamente en la versión 0.3. El código siguiente es orientativo; consulta la [documentación actualizada](https://cran.r-project.org/package=dabestr) si usas una versión reciente del paquete.
+:::
+
 ```{r}
-#| warning: false
-#| message: false
+#| eval: false
 library(dabestr)
 
 two.group <- data %>%
@@ -422,27 +435,30 @@ two.group <- data %>%
     paired = FALSE)
 
 two.group.meandiff <- mean_diff(two.group)
-plot(two.group.meandiff, rawplot.ylabel = "Discrimination scores", rawplot.markersize = 3)
+plot(two.group.meandiff, rawplot.ylabel = "Discrimination scores")
 ```
 
 ![](11.png)
 
 ### 7.4. Guardar los gráficos
 
-Primero guardamos el gráfico como un objeto, luego lo exportamos:
+La forma más cómoda es `ggsave()` directamente sobre un objeto de `ggplot2`:
 
 ```{r}
 #| eval: false
-library(jpeg)
+# Primero guardamos el gráfico como objeto
+Grafico <- ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
+  stat_halfeye(adjust = .5, width = .6, .width = 0,
+    justification = -.3, point_colour = NA) +
+  geom_boxplot(width = .20, outlier.shape = NA) +
+  geom_point(size = 2, alpha = .5,
+    position = position_jitter(seed = 1, width = .1)) +
+  coord_cartesian(xlim = c(1.2, NA), clip = "off") +
+  scale_fill_manual(values = c("#56B4E9", "#D55E00")) +
+  ggtitle("Discrimination scores in both conditions") +
+  xlab("") + ylab("Discrimination scores") +
+  theme_pubr(legend = "none")
 
-jpeg(file = "Figure1.jpeg", width = 2000, height = 1400, units = "px", res = 300)
-Grafico  # El objeto con el gráfico creado anteriormente
-dev.off()
-```
-
-También se puede usar `ggsave()` directamente sobre un objeto de `ggplot2`, que es más cómodo:
-
-```{r}
-#| eval: false
+# Luego lo exportamos
 ggsave("Figure1.png", plot = Grafico, width = 10, height = 7, dpi = 300)
 ```
