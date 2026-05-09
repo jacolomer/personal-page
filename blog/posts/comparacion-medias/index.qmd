@@ -169,7 +169,6 @@ medboot %>%
   theme_classic()
 ```
 
-![](1.png)
 
 Simulamos un mundo donde el estadístico es nulo:
 
@@ -194,7 +193,6 @@ cond_diffs_null %>%
   theme_classic()
 ```
 
-![](2.png)
 
 Vemos que parece muy poco probable observar este valor en un mundo sin diferencias entre grupos.
 
@@ -285,7 +283,6 @@ barplt <- ggplot(infograph) +
 barplt + theme_pubr(base_size = 10, border = FALSE, margin = TRUE, legend = "none")
 ```
 
-![](4.png)
 
 ### 7.2. Gráficos de violín
 
@@ -297,7 +294,6 @@ La forma más rápida con `ggbetweenstats` del paquete `ggstatsplot`:
 ggbetweenstats(data = data, x = condition, y = discrimination)
 ```
 
-![](5.png)
 
 Con más opciones de personalización:
 
@@ -320,7 +316,6 @@ ggbetweenstats(
   package = "RColorBrewer", palette = "Dark2")
 ```
 
-![](6.png)
 
 Otra forma con `ggplot2`:
 
@@ -339,7 +334,6 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 ```
 
-![](7.png)
 
 *Raincloud plot* (violín + boxplot + puntos):
 
@@ -362,7 +356,6 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 ```
 
-![](8.png)
 
 Añadiendo la significación estadística con `ggsignif`:
 
@@ -387,7 +380,6 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 ```
 
-![](9.png)
 
 Incluyendo el resultado estadístico directamente con `statsExpressions`:
 
@@ -417,7 +409,6 @@ ggplot(data, aes(x = condition, y = discrimination, fill = condition)) +
   theme_pubr(base_size = 11, border = FALSE, margin = TRUE, legend = "none")
 ```
 
-![](10.png)
 
 ### 7.3. Estimation plots con `dabestr`
 
