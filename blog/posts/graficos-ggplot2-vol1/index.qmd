@@ -1,0 +1,303 @@
+---
+title: "Gráficos en R (vol. I)"
+description: "Una introducción a la lógica de ggplot2: cómo construir un gráfico capa a capa ajustando themes, colores y leyendas, y cómo hacer diagramas de dispersión con histogramas marginales."
+date: "2022-02-22"
+categories: [R, Visualización, ggplot2]
+image: featured.png
+toc: true
+toc-title: "Contenidos"
+---
+
+*(realizado junto a Eva Moreno Bella)*
+
+ggplot2 es probablemente la herramienta más utilizada para hacer gráficos en R, y con razón: su lógica es elegante y, una vez entendida, muy intuitiva. La idea central es que un gráfico se construye como si fueran capas superpuestas. Primero defines qué datos usas y qué variables van a qué parte del gráfico (la *cartografía estética*). Después vas añadiendo capas — una para la geometría, otra para los colores, otra para el tema visual — usando el operador `+`. En esta entrada vamos a recorrer ese proceso de principio a fin con el mismo gráfico, y al final vemos cómo hacer diagramas de dispersión para correlaciones.
+
+## 0. Preparar el espacio de trabajo
+
+### Fuentes
+
+Para poder usar fuentes del sistema en los gráficos, cargamos `extrafont` e importamos las fuentes. Esto tarda un poco la primera vez, pero solo hay que hacerlo una vez por máquina.
+
+```{r}
+#| eval: false
+# install.packages("extrafont")
+library(extrafont)
+font_import(prompt = FALSE)  # importa todas las fuentes del sistema
+loadfonts(device = "win")    # en Mac: device = "pdf" o "quartz"
+```
+
+La fuente que usaremos es [Roboto Condensed](https://fonts.google.com/specimen/Roboto+Condensed), disponible en Google Fonts.
+
+### Paquetes
+
+```{r}
+#| message: false
+#| results: hide
+
+# install.packages("pacman")
+library(pacman)
+
+p_load(
+  ggplot2,     # los gráficos
+  dplyr,       # manipulación de datos
+  hrbrthemes,  # temas tipográficos para ggplot2
+  viridis,     # paletas de color
+  wesanderson, # paletas de color
+  ggtext,      # texto enriquecido en gráficos (markdown en títulos)
+  ggExtra,     # histogramas marginales
+  faux,        # datos simulados correlacionados
+  install = TRUE
+)
+```
+
+### Paletas de color
+
+Podemos definir los colores de dos formas: directamente con el código hexadecimal o extrayéndolos de algún paquete con paletas predefinidas. Conviene guardarlos como objetos al principio para no tener que repetirlos en cada gráfico.
+
+```{r}
+paleta1 <- wes_palette("Darjeeling1")
+paleta2 <- c("#990099", "#99FF99")
+```
+
+## 1. Los datos
+
+Creamos un par de conjuntos de datos sintéticos que usaremos a lo largo de la entrada.
+
+```{r}
+set.seed(1)
+
+# Dos grupos con distribuciones diferenciadas
+datos2g <- data.frame(
+  x = c(rnorm(500, mean = 7, sd = 1.4),
+        rnorm(500, mean = 2, sd = 1.2)),
+  y = c(rnorm(500, mean = 2.8, sd = 1.2),
+        rnorm(500, mean = 7.7, sd = 1.1)),
+  Autodefinicion = c(rep("Políticamente incorrecto", 500),
+                     rep("No políticamente incorrecto", 500))
+)
+
+# Tres variables correlacionadas (para scatter plots)
+datoscor <- rnorm_multi(
+  n         = 3000,
+  mu        = c(7, 7, 7),
+  sd        = c(0.9, 1.2, 0.71),
+  r         = c(0.5, 0, -0.7),
+  varnames  = c("x", "y", "z"),
+  empirical = FALSE
+)
+```
+
+## 2. La cartografía estética
+
+El primer paso es crear la **cartografía estética** (*aesthetic mapping*): decirle a ggplot qué datos vamos a usar y qué variables van a representarse en qué parte del gráfico. Esto se hace con `ggplot()` y la función `aes()`.
+
+```{r}
+g <- ggplot(data = datos2g, mapping = aes(x = x))
+g
+```
+
+El objeto `g` existe pero está vacío: hemos definido los datos y el eje x, pero todavía no hemos dicho cómo representarlos. Para eso necesitamos añadir una *geom*.
+
+## 3. La primera capa: una geom
+
+Las geoms son las funciones que determinan la forma geométrica con la que se representan los datos. Añadimos `geom_density()` para ver la distribución de `x`:
+
+```{r}
+g + geom_density()
+```
+
+Ahora añadimos el grupo y el relleno a la cartografía estética, y ajustamos la transparencia (`alpha`), el grosor de la línea (`linewidth`) y el tipo de línea (`linetype`):
+
+```{r}
+ggplot(data = datos2g,
+       mapping = aes(x = x, group = Autodefinicion, fill = Autodefinicion)) +
+  geom_density(alpha = 0.75, linewidth = 1.5, linetype = 1)
+```
+
+También podemos añadir más capas. Por ejemplo, una línea vertical en la media global con `geom_vline()`:
+
+```{r}
+objeto <- ggplot(data = datos2g,
+                 mapping = aes(x = x, group = Autodefinicion, fill = Autodefinicion)) +
+  geom_vline(xintercept = mean(datos2g$x),
+             colour = "#FF9999", linetype = 2, linewidth = 1.2) +
+  geom_density(alpha = 0.75, linewidth = 1.5, linetype = 1)
+```
+
+## 4. Títulos, subtítulos y pies de página
+
+La función `labs()` controla todos los textos del gráfico. Con el paquete `ggtext` podemos usar Markdown dentro de esos textos (negrita, cursiva, HTML):
+
+```{r}
+objeto +
+  labs(
+    title   = "Políticamente incorrectos",
+    caption = "Fuente: **Stapel** (2012)"
+  ) +
+  theme(plot.caption = element_markdown(lineheight = 1.2))
+```
+
+## 5. Leyendas
+
+La posición de la leyenda se controla en `theme()`, y podemos cambiar su título con `guides()`:
+
+```{r}
+ggplot(data = datos2g,
+       mapping = aes(x = x, group = Autodefinicion, fill = Autodefinicion)) +
+  geom_density(alpha = 0.75, linewidth = 1.25, linetype = 1) +
+  geom_vline(xintercept = mean(datos2g$x),
+             colour = "#FF9999", linetype = 2, linewidth = 1.2) +
+  labs(title   = "Políticamente incorrectos",
+       caption = "Fuente: **Stapel** (2012)") +
+  theme(plot.caption    = element_markdown(lineheight = 1.2),
+        legend.position = "top") +
+  guides(fill = guide_legend(title = "Nueva leyenda"))
+```
+
+## 6. Temas (theme)
+
+Los temas controlan todos los elementos no-datos del gráfico: fondo, rejilla, tamaño de fuente, etc. Podemos definirlos manualmente o usar temas prediseñados.
+
+### 6.1. Tema manual
+
+```{r}
+ggplot(data = datos2g,
+       mapping = aes(x = x, group = Autodefinicion, fill = Autodefinicion)) +
+  geom_density(alpha = 0.75, linewidth = 1.25, linetype = 1) +
+  geom_vline(xintercept = mean(datos2g$x),
+             colour = "#FF9999", linetype = 2, linewidth = 1.2) +
+  labs(title   = "Políticamente incorrectos",
+       caption = "Fuente: Stapel (2012)") +
+  theme(
+    text             = element_text(size = 14, family = "Roboto Condensed"),
+    axis.line        = element_line(colour = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border     = element_blank(),
+    panel.background = element_blank(),
+    plot.title       = element_text(size = 18),
+    plot.caption     = element_markdown(lineheight = 1.2),
+    legend.position  = "top"
+  ) +
+  guides(fill = guide_legend(title = "Autodefinición"))
+```
+
+### 6.2. Temas prediseñados
+
+Más rápido: partir de un tema ya construido y modificar solo lo que queramos.
+
+```{r}
+ggplot(data = datos2g,
+       mapping = aes(x = x, group = Autodefinicion, fill = Autodefinicion)) +
+  geom_density(alpha = 0.75, linewidth = 1.25, linetype = 1) +
+  geom_vline(xintercept = mean(datos2g$x),
+             colour = "#FF9999", linetype = 2, linewidth = 1.2) +
+  labs(title   = "Políticamente incorrectos",
+       caption = "Fuente: Stapel (2012)") +
+  theme_classic(base_size = 18, base_family = "Roboto Condensed") +
+  theme(plot.caption    = element_markdown(lineheight = 1.2),
+        legend.position = "top") +
+  guides(fill = guide_legend(title = "Autodefinición"))
+```
+
+## 7. Etiquetas de los ejes
+
+Con `xlab()` e `ylab()`, o directamente dentro de `labs()`:
+
+```{r}
+ggplot(data = datos2g,
+       mapping = aes(x = x, group = Autodefinicion, fill = Autodefinicion)) +
+  geom_density(alpha = 0.75, linewidth = 1.25, linetype = 1) +
+  geom_vline(xintercept = mean(datos2g$x),
+             colour = "#FF9999", linetype = 1, linewidth = 1.2) +
+  labs(title   = "Políticamente incorrectos",
+       caption = "Fuente: Stapel (2012)") +
+  theme_classic(base_size = 18, base_family = "Roboto Condensed") +
+  theme(plot.caption    = element_markdown(lineheight = 1.2),
+        legend.position = "top") +
+  guides(fill = guide_legend(title = "Autodefinición")) +
+  ylab("Densidad") + xlab("Misoginia interiorizada")
+```
+
+## 8. Colores
+
+Con `scale_fill_manual()` asignamos colores de forma manual. Aquí usamos la paleta `Darjeeling1` del paquete `wesanderson`:
+
+```{r}
+grafico1 <- ggplot(data = datos2g,
+                   mapping = aes(x = x, group = Autodefinicion, fill = Autodefinicion)) +
+  geom_density(alpha = 0.75, linewidth = 1.25, linetype = 1) +
+  geom_vline(xintercept = mean(datos2g$x),
+             colour = "#FF9999", linetype = 2, linewidth = 1.2) +
+  labs(title   = "Políticamente incorrectos",
+       caption = "Fuente: Stapel (2012)") +
+  theme_classic(base_size = 18, base_family = "Roboto Condensed") +
+  theme(plot.caption    = element_markdown(lineheight = 1.2),
+        legend.position = "top") +
+  guides(fill = guide_legend(title = "Autodefinición")) +
+  ylab("Densidad") + xlab("Misoginia interiorizada") +
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
+grafico1
+```
+
+## 9. Guardar el gráfico
+
+`ggsave()` detecta el formato por la extensión del nombre de archivo. El argumento `dpi` controla la resolución (300-500 es suficiente para publicación):
+
+```{r}
+#| eval: false
+ggsave(
+  filename = "politicamente_incorrecto.png",
+  plot     = grafico1,
+  width    = 9,
+  height   = 6,
+  device   = "png",
+  dpi      = 500
+)
+```
+
+## 10. Diagrama de dispersión (correlaciones)
+
+Para visualizar la relación entre dos variables usamos `geom_point()`. Añadimos una línea de regresión con `geom_smooth()` y ajustamos la escala de los ejes con `scale_x_continuous()` y `scale_y_continuous()`:
+
+```{r}
+#| message: false
+corplot <- ggplot(data = datoscor, aes(x = x, y = z)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = lm, color = "red", fill = "blue", se = TRUE) +
+  labs(
+    title    = "Relación entre leer y ser tolerante",
+    subtitle = "Ni leyendo ni viajando"
+  ) +
+  theme_classic(base_size = 18, base_family = "Roboto Condensed") +
+  ylab("Libros") + xlab("Tolerancia") +
+  scale_x_continuous(limits = c(3, 10)) +
+  scale_y_continuous(limits = c(3, 10))
+
+corplot
+```
+
+### 10.1. Histogramas marginales
+
+Con `ggMarginal()` del paquete `ggExtra` podemos añadir la distribución de cada variable en los márgenes del gráfico:
+
+```{r}
+nilniv <- ggMarginal(corplot, type = "histogram",
+                     fill = "white", col = 2)
+nilniv
+```
+
+```{r}
+#| eval: false
+ggsave(
+  filename = "lectura_tolerancia.png",
+  plot     = nilniv,
+  width    = 9,
+  height   = 6,
+  device   = "png",
+  dpi      = 500
+)
+```
+
+En el [volumen II](../graficos-ggplot2-vol2/) vemos cómo hacer matrices de correlación, gráficos de barras con intervalos de confianza, violin plots, forest plots y gráficos interactivos.
