@@ -1,0 +1,335 @@
+---
+title: "R desde cero (vol. II)"
+description: "Análisis estadísticos habituales en ciencias sociales con R: descriptivos, comparación de medias, correlaciones, ANOVA, regresión lineal, moderación, mediación y gráficos."
+date: "2021-10-22"
+categories: [R, Estadística, CIS]
+image: featured.png
+toc: true
+toc-title: "Contenidos"
+execute:
+  warning: false
+  message: false
+  eval: false
+knitr:
+  opts_chunk:
+    dpi: 300
+---
+
+*(realizado junto a Ángel del Fresno Díaz)*
+
+En el [volumen I](../r-desde-cero-vol1/) cargamos y preparamos los datos del CIS 3242 (*Opinión pública y política fiscal*). Aquí los usamos para hacer los análisis más habituales en ciencias sociales. Partimos del objeto `Data` ya preparado — si lo guardaste en el volumen anterior, puedes retomarlo con:
+
+```{r}
+load("Data_limpia.RData")
+```
+
+Si no, vuelve al volumen I y ejecuta todos los pasos desde el principio antes de continuar aquí.
+
+## 1. Exploración y descriptivos
+
+Antes de cualquier análisis conviene hacerse una imagen del conjunto de datos. El paquete `sjmisc` produce tablas de descriptivos con formato legible:
+
+```{r}
+p_load(sjmisc, psych)
+
+# Tabla en el visor de RStudio
+Data %>%
+  descr(out = "viewer")
+```
+
+Para ver la distribución de una variable categórica como el género:
+
+```{r}
+prop.table(table(Data$genero))
+```
+
+Y descriptivos detallados para un grupo de variables numéricas con `psych::describe()` — devuelve media, sd, mediana, asimetría, curtosis y más:
+
+```{r}
+Data %>%
+  dplyr::select(
+    felicidad, confianza, solidaridad, voto, no_evasion,
+    obediencia, tolerancia, honestidad, acimp,
+    desigualdad, meritocracia, ideologia, ingresos, estudios
+  ) %>%
+  psych::describe()
+```
+
+Para un histograma rápido de cualquier variable:
+
+```{r}
+ggplot(Data, aes(x = confianza)) +
+  geom_histogram(binwidth = 0.6) +
+  scale_x_continuous("Confianza generalizada") +
+  scale_y_continuous("Frecuencia") +
+  labs(
+    title    = "Histograma de confianza generalizada",
+    subtitle = "Frecuencia absoluta"
+  ) +
+  theme_classic()
+```
+
+También podemos explorar las relaciones entre varias variables a la vez con una matriz de gráficos. El paquete `GGally` facilita esto:
+
+```{r}
+p_load(GGally)
+
+ggpairs(Data, columns = c("felicidad", "confianza", "acimp"),
+        aes(colour = clase))
+```
+
+## 2. Comparación de medias (t-test)
+
+Pregunta típica: ¿difieren hombres y mujeres en su percepción de la desigualdad?
+
+Primero comprobamos si las varianzas son iguales con `var.test()`:
+
+```{r}
+var.test(desigualdad ~ genero, Data)
+```
+
+Si el p-valor es pequeño (< .05), las varianzas son significativamente distintas y debemos usar `var.equal = FALSE` en el t-test (corrección de Welch). Si no, podemos asumir igualdad de varianzas.
+
+```{r}
+t.test(desigualdad ~ genero, data = Data, var.equal = FALSE)
+```
+
+La función devuelve el estadístico t, los grados de libertad, el p-valor y el intervalo de confianza para la diferencia de medias. Para calcular el tamaño del efecto (d de Cohen):
+
+```{r}
+psych::cohen.d(Data$desigualdad, group = Data$genero, alpha = .05)
+```
+
+Un valor de d ≈ 0.2 es pequeño, ≈ 0.5 mediano, ≈ 0.8 grande (criterios de Cohen, 1988).
+
+## 3. Correlaciones
+
+Para estudiar la relación lineal entre dos variables numéricas:
+
+```{r}
+cor.test(Data$confianza, Data$acimp)
+```
+
+El resultado incluye el coeficiente de correlación de Pearson (r), el p-valor y el intervalo de confianza. Un r de 0.1–0.3 se considera pequeño, 0.3–0.5 moderado, > 0.5 grande.
+
+Para ver todas las correlaciones entre un conjunto de variables de una vez, `sjPlot::tab_corr()` produce una tabla formateada:
+
+```{r}
+p_load(sjPlot)
+
+Data %>%
+  dplyr::select(
+    confianza, felicidad, desigualdad, meritocracia,
+    acimp, ideologia, ingresos, estudios
+  ) %>%
+  sjPlot::tab_corr()
+```
+
+## 4. ANOVA
+
+El ANOVA compara medias entre más de dos grupos. Por ejemplo: ¿varía la creencia meritocrática según la clase social subjetiva?
+
+Primero, siempre es buena idea representarlo gráficamente antes del análisis:
+
+```{r}
+ggplot(data = Data, aes(x = acimp, y = clase, color = clase)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(x = "Actitud hacia los impuestos", y = "Clase social subjetiva") +
+  theme(legend.position = "none")
+```
+
+Ahora el análisis. La función `aov()` ajusta el modelo y `summary.aov()` muestra los resultados:
+
+```{r}
+res.aov <- aov(meritocracia ~ clase, data = Data)
+summary.aov(res.aov)
+```
+
+Si el ANOVA es significativo, sabemos que *algún* grupo difiere, pero no *cuáles*. Para eso sirve el test de Tukey, que hace todas las comparaciones por pares controlando el error de tipo I:
+
+```{r}
+tukey <- TukeyHSD(res.aov, conf.level = 0.95)
+tukey
+plot(tukey)
+```
+
+El tamaño del efecto en ANOVA se mide con eta cuadrado (η²):
+
+```{r}
+p_load(effectsize)
+
+effectsize::effectsize(res.aov)
+effectsize::interpret_eta_squared(0.01, rules = "cohen1992")
+```
+
+Un η² ≈ 0.01 es pequeño, ≈ 0.06 mediano, ≈ 0.14 grande.
+
+## 5. Regresión lineal
+
+La regresión permite predecir una variable continua a partir de una o más predictoras. Antes de entrar los predictores, conviene centrarlos (restar la media) para que el intercepto sea interpretable como el valor predicho en la media de cada predictor:
+
+```{r}
+Data$acimpcen       <- scale(Data$acimp,        center = TRUE, scale = FALSE)
+Data$desigualcen    <- scale(Data$desigualdad,  center = TRUE, scale = FALSE)
+Data$meritocraciacen <- scale(Data$meritocracia, center = TRUE, scale = FALSE)
+Data$ideologiacen   <- scale(Data$ideologia,    center = TRUE, scale = FALSE)
+Data$ingresoscen    <- scale(Data$ingresos,     center = TRUE, scale = FALSE)
+Data$estudioscen    <- scale(Data$estudios,     center = TRUE, scale = FALSE)
+```
+
+Construimos varios modelos de forma jerárquica — primero predictores sociodemográficos, luego actitudinales:
+
+```{r}
+Reg0 <- lm(acimpcen ~ 1, Data)  # Modelo nulo (solo intercepto)
+
+Reg1 <- lm(acimpcen ~ ideologiacen + ingresoscen + estudioscen, data = Data)
+summary(Reg1)
+
+Reg2 <- lm(acimpcen ~ desigualcen + meritocraciacen + ideologiacen +
+             ingresoscen + estudioscen, data = Data)
+summary(Reg2)
+```
+
+### 5.1. Comprobación de supuestos
+
+El paquete `performance` ofrece diagnósticos visuales y estadísticos de todos los supuestos de una vez:
+
+```{r}
+p_load(performance, qqplotr)
+
+performance::check_model(Reg2)
+```
+
+También podemos comprobarlo supuesto a supuesto:
+
+```{r}
+check_autocorrelation(Reg2)   # Test de Durbin-Watson
+check_collinearity(Reg2)      # Factores de inflación de varianza (VIF)
+check_heteroscedasticity(Reg2)
+check_normality(Reg2)
+check_outliers(Reg2)
+```
+
+### 5.2. Comparar modelos
+
+`sjPlot::tab_model()` presenta los resultados de varios modelos en una sola tabla, con coeficientes estandarizados y no estandarizados:
+
+```{r}
+sjPlot::tab_model(Reg0, Reg1, Reg2,
+                  show.est  = TRUE,
+                  show.std  = TRUE,
+                  show.r2   = TRUE)
+```
+
+## 6. Moderación
+
+La moderación implica que el efecto de una variable sobre otra depende del nivel de una tercera. Aquí examinamos si el efecto de la ideología sobre la actitud ante los impuestos varía según el nivel de ingresos:
+
+```{r}
+Mod1 <- lm(acimp ~ ideologiacen + ingresoscen + ideologiacen * ingresoscen,
+           data = Data)
+summary(Mod1)
+```
+
+El término de interacción (`ideologiacen:ingresoscen`) captura la moderación. Si es significativo, el efecto de la ideología varía a lo largo de los valores de ingresos.
+
+Para visualizarlo e identificar en qué rango de ingresos el efecto de la ideología es significativo, usamos el análisis de Johnson-Neyman:
+
+```{r}
+p_load(interactions)
+
+johnson_neyman(Mod1, pred = "ingresoscen", modx = "ideologiacen")
+```
+
+El gráfico resultante muestra las "zonas de significación": los valores del moderador donde el efecto del predictor cruza el umbral de significación.
+
+## 7. Mediación
+
+La mediación examina si el efecto de una variable X sobre Y ocurre *a través* de una tercera variable M. Por ejemplo: ¿el efecto de la ideología sobre la actitud ante los impuestos está mediado por la percepción de desigualdad?
+
+```{r}
+p_load(JSmediation, mediation)
+
+# mdt_simple(data, predictor, outcome, mediator)
+Med1 <- mdt_simple(
+  data        = Data,
+  IV          = ideologiacen,
+  DV          = acimpcen,
+  M           = desigualcen
+)
+
+add_index(Med1, times = 10000, level = 0.05)
+```
+
+`add_index()` aplica bootstrap (10.000 muestras por defecto) para obtener el intervalo de confianza del efecto indirecto. Si el intervalo no contiene el cero, la mediación es estadísticamente significativa.
+
+## 8. Gráficos de exploración
+
+Además de los gráficos para los análisis, a veces es útil visualizar los datos directamente para explorar patrones.
+
+### 8.1. Comparaciones entre grupos
+
+Un violin plot para ver la distribución de confianza por género:
+
+```{r}
+ggplot(Data, aes(x = genero, y = confianza, fill = genero)) +
+  geom_violin(alpha = 0.7) +
+  theme_classic() +
+  labs(x = NULL, y = "Confianza generalizada") +
+  theme(legend.position = "none")
+```
+
+Para comparar la distribución de meritocracia por clase social, los gráficos de densidad superpuestos (*ridgelines*) son muy efectivos:
+
+```{r}
+p_load(ggridges)
+
+ggplot(Data, aes(x = meritocracia, y = clase, fill = clase)) +
+  geom_density_ridges(alpha = 0.7) +
+  theme_ridges() +
+  labs(x = "Creencias meritocráticas", y = NULL) +
+  theme(legend.position = "none")
+```
+
+### 8.2. Relación entre variables cuantitativas
+
+Un diagrama de dispersión básico con línea de tendencia:
+
+```{r}
+ggplot(Data, aes(x = desigualdad, y = ideologia)) +
+  geom_point(color = "#69b3a2", alpha = 0.3) +
+  geom_smooth(method = lm, color = "red", se = TRUE, fill = "#69b3a2") +
+  theme_classic() +
+  labs(x = "Percepción de desigualdad", y = "Autoubicación ideológica")
+```
+
+### 8.3. Gráfico de coordenadas paralelas
+
+Útil para visualizar varias variables simultáneamente y cómo se relacionan entre sí por grupos:
+
+```{r}
+p_load(GGally, viridis, hrbrthemes)
+
+# Primero añadimos etiquetas al factor género
+Data$genero <- factor(Data$genero,
+                      levels = c(1, 2),
+                      labels = c("Hombre", "Mujer"))
+
+Data2 <- na.omit(Data)  # eliminamos casos con cualquier NA
+
+ggparcoord(Data2,
+           columns     = c("confianza", "acimp", "meritocracia", "ideologia"),
+           groupColumn = "genero",
+           order       = "allClass",
+           scale       = "globalminmax",
+           showPoints  = TRUE,
+           alphaLines  = 0.3) +
+  scale_color_viridis(discrete = TRUE) +
+  theme_ipsum() +
+  labs(title = "Variables de interés por género") +
+  theme(plot.title = element_text(size = 12),
+        legend.title = element_blank())
+```
+
+Cada línea es un participante; el color indica el género. Podemos ver si los perfiles medios difieren entre grupos y cómo se correlacionan las variables (líneas que van en paralelo = correlación positiva; que se cruzan = correlación negativa).

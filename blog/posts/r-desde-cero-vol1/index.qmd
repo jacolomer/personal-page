@@ -1,0 +1,339 @@
+---
+title: "R desde cero (vol. I)"
+description: "Una introducción práctica a R: operaciones básicas, objetos, vectores, paquetes y cómo cargar y preparar datos reales del CIS."
+date: "2021-10-15"
+categories: [R, Datos, CIS]
+image: featured.png
+toc: true
+toc-title: "Contenidos"
+execute:
+  warning: false
+  message: false
+  eval: false
+knitr:
+  opts_chunk:
+    dpi: 300
+---
+
+*(realizado junto a Ángel del Fresno Díaz)*
+
+Esta entrada es el punto de partida de una serie pensada para quien empieza en R desde cero. No asumimos ningún conocimiento previo de programación, pero sí de estadística básica. La idea es que al final de los dos volúmenes seas capaz de cargar datos reales, limpiarlos y hacer los análisis más habituales en ciencias sociales.
+
+Trabajaremos con una encuesta del CIS sobre opinión pública y política fiscal, así que lo primero que hay que hacer es descargarla.
+
+## 0. Descargar los datos del CIS
+
+El Centro de Investigaciones Sociológicas pone a disposición pública sus encuestas en formato SPSS (`.sav`). Para esta entrada necesitas el estudio **3242** (*Opinión pública y política fiscal*).
+
+Los pasos son:
+
+1. Ve a [https://www.cis.es/catalogo-de-estudios](https://www.cis.es/catalogo-de-estudios) y busca el número 3242.
+2. En la ficha del estudio, descarga el fichero de microdatos en formato SPSS (`.sav`).
+3. Crea una carpeta en tu ordenador — por ejemplo `C:/MiProyectoR/datos/` — y guarda ahí el archivo.
+4. Renómbralo `CISPF.sav` para que coincida con el código de esta entrada.
+
+Una vez descargado, abre RStudio y asegúrate de que tu directorio de trabajo apunta a esa carpeta. Puedes hacerlo de dos formas:
+
+```{r}
+# Opción 1: manualmente con setwd()
+setwd("C:/MiProyectoR/datos/")
+
+# Opción 2: desde el menú de RStudio
+# Session → Set Working Directory → Choose Directory
+```
+
+Con eso ya tienes el escenario preparado.
+
+## 1. Operaciones básicas
+
+R funciona como una calculadora muy potente. Las operaciones aritméticas habituales:
+
+```{r}
+2 + 2   # Suma
+3 - 5   # Resta
+4 * 5   # Multiplicación
+5 / 8   # División
+```
+
+R también evalúa expresiones lógicas y devuelve `TRUE` o `FALSE`. Esto tiene mucha utilidad práctica más adelante, por ejemplo para filtrar datos:
+
+```{r}
+6 < 4   # FALSE
+6 > 4   # TRUE
+```
+
+Un error clásico al empezar es olvidar los paréntesis en operaciones compuestas:
+
+```{r}
+10 + 10 + 10 / 3   # Incorrecto: divide solo el último 10
+(10 + 10 + 10) / 3 # Correcto: divide la suma
+```
+
+Algunas funciones matemáticas útiles:
+
+```{r}
+sqrt(4)    # Raíz cuadrada → 2
+abs(-5)    # Valor absoluto → 5
+round(1.216, digits = 2)  # Redondear a 2 decimales → 1.22
+```
+
+## 2. Objetos y vectores
+
+En R todo se guarda como un **objeto** usando el operador de asignación `<-`. Una vez creado, el objeto queda disponible en el entorno de trabajo (panel *Environment* de RStudio):
+
+```{r}
+Objeto <- 1
+Luna   <- 99
+
+Objeto  # Muestra en consola: [1] 1
+```
+
+Un **vector** es una colección de valores del mismo tipo — lo que en estadística llamaríamos una variable. Se crea con la función `c()` (*combine*):
+
+```{r}
+X1 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+X2 <- c(1, 2, 1, 2, 1, 2, 1, 2, 1)
+```
+
+R distingue mayúsculas y minúsculas, así que `X1` y `x1` son objetos distintos. Para verificar qué tipo de objeto tienes:
+
+```{r}
+is.vector(X1)      # TRUE
+is.factor(X1)      # FALSE
+is.data.frame(X1)  # FALSE
+```
+
+Funciones descriptivas básicas sobre un vector:
+
+```{r}
+mean(X1)  # Media
+sd(X1)    # Desviación típica
+```
+
+### 2.1. De vectores a base de datos
+
+Combinamos vectores con `cbind()` para crear una **matriz**, y la convertimos en un **data frame** (base de datos) con `as.data.frame()`:
+
+```{r}
+Matriz <- cbind(X1, X2)
+Datos  <- as.data.frame(Matriz)
+
+print(Datos)  # Dos columnas: X1 y X2
+```
+
+Un data frame es la estructura de datos más habitual en R: filas son observaciones, columnas son variables.
+
+## 3. Paquetes
+
+R base ya incluye muchas funciones, pero su potencia real viene de los **paquetes**: colecciones de funciones adicionales creadas por la comunidad. El proceso es siempre el mismo: instalar una vez y cargar en cada sesión.
+
+```{r}
+install.packages("pacman")  # Solo la primera vez
+library(pacman)             # Cargar en cada sesión
+```
+
+El paquete `pacman` tiene la función `p_load()`, que instala automáticamente si el paquete no está disponible y lo carga en un solo paso:
+
+```{r}
+p_load(
+  foreign,    # leer ficheros de SPSS, Stata, SAS...
+  haven,      # alternativa moderna a foreign
+  dplyr,      # manipulación de datos
+  labelled,   # manejo de variables con etiquetas (datos de encuesta)
+  ggplot2,    # gráficos
+  psych,      # estadísticos descriptivos
+  sjmisc,     # tablas descriptivas
+  naniar,     # tratamiento de valores perdidos
+  install = TRUE
+)
+```
+
+Para saber si una función existe en tu sesión actual:
+
+```{r}
+exists("p_load")  # TRUE si está cargada
+```
+
+## 4. Cargar los datos del CIS
+
+Con los paquetes cargados, leemos el archivo `.sav` que descargamos al principio. La función `read_sav()` del paquete `haven` es la opción recomendada para datos en formato SPSS:
+
+```{r}
+CISPF <- read_sav("CISPF.sav")
+```
+
+Si `setwd()` apunta a la carpeta donde está el archivo, basta con el nombre del fichero. Si no, pon la ruta completa:
+
+```{r}
+# Con ruta completa (adapta a tu caso)
+CISPF <- read_sav("C:/MiProyectoR/datos/CISPF.sav")
+```
+
+Las variables que usaremos a lo largo de los dos volúmenes son:
+
+| Variable | Descripción | Escala |
+|---|---|---|
+| `SEXO` | Género del entrevistado | Factor (1=H, 2=M) |
+| `EDAD` | Edad | Numérica |
+| `ESCAFELI` | Felicidad subjetiva | 0–10 |
+| `ESCACONFIANZA` | Confianza generalizada | 0–10 |
+| `P4_1`–`P4_6` | Virtudes cívicas | 0–10 c/u |
+| `ESCAIMPUESTOS` | Actitud hacia los impuestos | 0–10 |
+| `DESIGUALDAD` | Percepción de desigualdad | 1–3 |
+| `INTERVENESTADO` | Preferencia de intervención del Estado | 1–4 |
+| `ESCAPOSICION` | Creencias meritocráticas | 0–10 |
+| `ESCIDEOL` | Autoubicación ideológica | 1–10 |
+| `CLASESUB` | Clase social subjetiva | Factor |
+| `INGREHOG` | Ingresos del hogar | 1–11 |
+| `NIVELESTENTREV` | Nivel de estudios | 1–14 |
+
+## 5. Tratamiento de los datos
+
+Los datos del CIS vienen en formato *labelled* — un tipo especial de SPSS donde los valores numéricos llevan etiquetas de texto adjuntas. Antes de trabajar con ellos hay que convertirlos a tipos que R entienda bien: numérico o factor.
+
+### 5.1. Convertir tipos de variable
+
+Para variables **categóricas** (género, clase social...) usamos `to_factor()`:
+
+```{r}
+CISPF$SEXO     <- to_factor(CISPF$SEXO)
+CISPF$P7       <- to_factor(CISPF$P7)
+CISPF$INTERVENESTADO <- to_factor(CISPF$INTERVENESTADO)
+CISPF$CLASESUB <- to_factor(CISPF$CLASESUB)
+```
+
+Para variables **numéricas** (escalas, edades, ingresos...) usamos `as.numeric()`:
+
+```{r}
+CISPF$EDAD           <- as.numeric(CISPF$EDAD)
+CISPF$ESCAFELI       <- as.numeric(CISPF$ESCAFELI)
+CISPF$ESCACONFIANZA  <- as.numeric(CISPF$ESCACONFIANZA)
+CISPF$P4_1  <- as.numeric(CISPF$P4_1)
+CISPF$P4_2  <- as.numeric(CISPF$P4_2)
+CISPF$P4_3  <- as.numeric(CISPF$P4_3)
+CISPF$P4_4  <- as.numeric(CISPF$P4_4)
+CISPF$P4_5  <- as.numeric(CISPF$P4_5)
+CISPF$P4_6  <- as.numeric(CISPF$P4_6)
+CISPF$ESCAIMPUESTOS  <- as.numeric(CISPF$ESCAIMPUESTOS)
+CISPF$DESIGUALDAD    <- as.numeric(CISPF$DESIGUALDAD)
+CISPF$ESCAPOSICION   <- as.numeric(CISPF$ESCAPOSICION)
+CISPF$ESCIDEOL       <- as.numeric(CISPF$ESCIDEOL)
+CISPF$INGREHOG       <- as.numeric(CISPF$INGREHOG)
+CISPF$NIVELESTENTREV <- as.numeric(CISPF$NIVELESTENTREV)
+```
+
+Una alternativa más rápida si quieres convertir todo a numérico de golpe (y luego reconvertir los factores uno a uno):
+
+```{r}
+val_labels(CISPF) <- NULL  # elimina todas las etiquetas
+# A partir de aquí todo es numérico; reconvertir factores manualmente
+CISPF$SEXO     <- to_factor(CISPF$SEXO)
+CISPF$CLASESUB <- to_factor(CISPF$CLASESUB)
+# ... etc.
+```
+
+### 5.2. Valores perdidos
+
+En el CIS los valores 98 y 99 codifican "No sabe" y "No contesta". Son valores que no deben entrar en los análisis, así que los reemplazamos por `NA` (la forma en que R representa datos ausentes).
+
+La forma manual con `na_if()`:
+
+```{r}
+CISPF$ESCAFELI      <- na_if(CISPF$ESCAFELI, 98)
+CISPF$ESCAFELI      <- na_if(CISPF$ESCAFELI, 99)
+CISPF$ESCACONFIANZA <- na_if(CISPF$ESCACONFIANZA, 98)
+CISPF$ESCACONFIANZA <- na_if(CISPF$ESCACONFIANZA, 99)
+# ... repetir para cada variable
+```
+
+La forma más compacta con `replace_with_na()` del paquete `naniar`:
+
+```{r}
+CISPF <- CISPF %>%
+  replace_with_na(replace = list(
+    ESCAFELI       = c(98, 99),
+    ESCACONFIANZA  = c(98, 99),
+    P4_1 = c(98, 99), P4_2 = c(98, 99), P4_3 = c(98, 99),
+    P4_4 = c(98, 99), P4_5 = c(98, 99), P4_6 = c(98, 99),
+    ESCAIMPUESTOS  = c(98, 99),
+    ESCAPOSICION   = c(98, 99),
+    CLASESUB       = c(8, 9),
+    ESCIDEOL       = c(97, 98, 99),
+    DESIGUALDAD    = c(8, 9),
+    INTERVENESTADO = c(8, 9),
+    NIVELESTENTREV = c(16, 98, 99),
+    INGREHOG       = c(98, 99)
+  ))
+```
+
+### 5.3. Recodificación
+
+Algunas variables están codificadas de forma inversa a como nos interesa interpretarlas. Por ejemplo, `ESCAPOSICION` mide meritocracia donde 0 = "todo depende del esfuerzo" y 10 = "todo depende del origen familiar". La invertimos para que puntuaciones altas signifiquen mayor creencia meritocrática:
+
+```{r}
+CISPF$ESCAPOSICION <- dplyr::recode(CISPF$ESCAPOSICION,
+  `0` = 10L, `1` = 9L, `2` = 8L, `3` = 7L, `4` = 6L,
+  `5` = 5L,  `6` = 4L, `7` = 3L, `8` = 2L, `9` = 1L, `10` = 0L)
+
+CISPF$ESCAIMPUESTOS <- dplyr::recode(CISPF$ESCAIMPUESTOS,
+  `0` = 10L, `1` = 9L, `2` = 8L, `3` = 7L, `4` = 6L,
+  `5` = 5L,  `6` = 4L, `7` = 3L, `8` = 2L, `9` = 1L, `10` = 0L)
+
+CISPF$ESCAIMPUESTOS <- as.numeric(CISPF$ESCAIMPUESTOS)
+CISPF$ESCAPOSICION  <- as.numeric(CISPF$ESCAPOSICION)
+```
+
+## 6. Crear una base de datos de trabajo
+
+Lo habitual es quedarse solo con las variables que van a usarse en el análisis y darles nombres más manejables. Con `subset()` seleccionamos columnas y con `rename()` las renombramos:
+
+```{r}
+Data <- subset(CISPF, select = c(
+  SEXO, EDAD, ESCAFELI, P4_1, P4_2, P4_3, P4_4, P4_5, P4_6,
+  ESCACONFIANZA, ESCAIMPUESTOS, DESIGUALDAD, ESCAPOSICION,
+  ESCIDEOL, CLASESUB, INGREHOG, NIVELESTENTREV
+))
+
+Data <- dplyr::rename(Data,
+  genero       = SEXO,
+  edad         = EDAD,
+  felicidad    = ESCAFELI,
+  solidaridad  = P4_1,
+  voto         = P4_2,
+  no_evasion   = P4_3,
+  obediencia   = P4_4,
+  tolerancia   = P4_5,
+  honestidad   = P4_6,
+  confianza    = ESCACONFIANZA,
+  acimp        = ESCAIMPUESTOS,
+  desigualdad  = DESIGUALDAD,
+  meritocracia = ESCAPOSICION,
+  ideologia    = ESCIDEOL,
+  ingresos     = INGREHOG,
+  clase        = CLASESUB,
+  estudios     = NIVELESTENTREV
+)
+```
+
+Podemos echar un primer vistazo al resultado:
+
+```{r}
+summary(Data)
+```
+
+## 7. Guardar la sesión
+
+Si quieres retomar el trabajo más adelante sin tener que volver a cargar y limpiar los datos, puedes guardar el objeto `Data` o toda la sesión:
+
+```{r}
+# Guardar solo el objeto Data
+save(Data, file = "Data_limpia.RData")
+
+# Guardar toda la sesión (todos los objetos del entorno)
+save.image("sesion_completa.RData")
+
+# Para cargar en otra sesión:
+load("Data_limpia.RData")
+```
+
+En el [volumen II](../r-desde-cero-vol2/) usamos esta base ya preparada para hacer los análisis: descriptivos, comparación de medias, correlaciones, ANOVA, regresión lineal, moderación y mediación.

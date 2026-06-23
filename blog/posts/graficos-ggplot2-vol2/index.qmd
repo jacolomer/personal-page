@@ -6,6 +6,12 @@ categories: [R, Visualización, ggplot2]
 image: featured.png
 toc: true
 toc-title: "Contenidos"
+execute:
+  warning: false
+  message: false
+knitr:
+  opts_chunk:
+    dpi: 300
 ---
 
 *(realizado junto a Eva Moreno Bella)*
