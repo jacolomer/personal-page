@@ -2,7 +2,9 @@
   {
     "listing": "/blog/index.html",
     "items": [
-      "/blog/posts/comparacion-medias/index.html"
+      "/blog/posts/comparacion-medias/index.html",
+      "/blog/posts/graficos-ggplot2-vol2/index.html",
+      "/blog/posts/graficos-ggplot2-vol1/index.html"
     ]
   }
 ]
